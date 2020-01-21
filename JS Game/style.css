@@ -1,0 +1,184 @@
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a {
+    margin: 0;
+    text-decoration: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    transition: 1s;
+    background-image: url("/img/forest.jpg");
+    
+}
+
+i.fas,
+i.fab,
+i.far {
+    color: black;
+    z-index: 99;
+}
+
+.fa-smile-beam {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    color: black;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 12px;
+}
+
+h1 {
+    display: inline-block;
+    font-size: 30px;
+}
+
+.playArea {
+    display: block;
+    position: relative;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    top: 20%;
+    height: 500px;
+    width: 400px;
+    background-color: white;
+    border: 1px solid black;
+}
+
+#face {
+    display: none;
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+    color: black;
+}
+
+#playerInfo {
+    display: none;
+    position: relative;
+}
+
+#settingInfo {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 50px;
+}
+
+#playerSubmit > button {
+    height: 20px;
+    width: 60px;
+
+}
+
+.dialogBox {
+    display: block;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    top: 10%;
+
+}
+
+#dialog {
+    font-size: 20px;
+    text-align: center;
+}
+
+.nextBox {
+    display: block;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    width: 399px;
+    bottom: 1px;
+    text-align: center;
+}
+
+.nextBox > i {
+    font-size: 50px;
+    height: 50px;
+    width: 50px;
+    padding: 10px;;
+    margin-bottom: 40px;
+    display: inline-block;
+    color: black;
+    
+}
+
+#nextIcons {
+    display: none;
+}
+
+.commandBox {
+    display: block;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    width: 399px;
+    bottom: 1px;
+    text-align: center;
+}
+
+.commandBox > i {
+    font-size: 50px;
+    height: 50px;
+    width: 50px;
+    padding: 10px;;
+    margin-bottom: 20px;
+    display: inline-block;
+    color: black;
+    
+}
+
+#commandIcons {
+    display: none;
+}
+
+
+#forward {
+    font-size: 80px;
+    height: 80px;
+    width: 80px;
+}
+
+.combatBox {
+    display: block;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    width: 399px;
+    bottom: 1px;
+    text-align: center;
+}
+
+.combatBox > i {
+    font-size: 50px;
+    height: 50px;
+    width: 50px;
+    padding: 10px;;
+    margin-bottom: 20px;
+    display: inline-block;
+    color: black;
+    
+}
+
+#combatIcons {
+    display: none;
+}

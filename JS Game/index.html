@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="playArea">
+        <div id="player">
+            <i id="face" class="far fa-smile-beam"></i>
+            <h1 id="playerName"></h1>
+            <span id="playerSubmit">
+                <input type="text" id="nameField" value="Who's Playing?"><button onclick="changeName()">Submit</button>
+            </span>
+            <br>
+            <span id="playerInfo">
+                <h2>Level: </h2><h2 id="levelInfo">???</h2>
+                <br>
+                <h3>Health: </h3><h3 id="heathInfo">???</h3>
+                <br>
+                <h2>Strength: </h2><h2 id="strengthInfo">???</h2>
+            </span>
+
+            <div id="location">
+                <i id="face" class="far fa-smile-beam"></i>
+                <h1 id="playerName"></h1>
+                <br>
+                <span id="settingInfo">
+                    <h2>Location: </h2><h2 id="locationInfo">???</h2>
+                    <br>
+                    <h3>Progress: </h3><h3 id="progressInfo">???</h3>
+                </span>
+            </div>
+        </div>
+
+
+        <div class="dialogBox">
+            <p id="dialog"></p>
+        </div>
+        
+        <div class="nextBox" id="nextIcons">
+            <i onclick="section1.challenge();" id="upArrow" class="fas fa-walking"></i>
+        </div>
+
+        <div class="commandBox" id="commandIcons">
+            <i id="fight" class="fas fa-hand-rock"></i>
+            <i id="forward" class="fas fa-arrow-up"></i>
+            <i id="run" class="fas fa-running"></i>
+        </div>
+
+        <div class="combatBox" id="combatIcons">
+            <i id="attack" class="fas fa-hand-rock"></i>
+            <i id="runAway" class="fas fa-running"></i>
+        </div>
+    </div>
+    
+
+
+
+
+<script src="app.js"></script>
+</body>
+</html>
