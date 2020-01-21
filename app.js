@@ -9,7 +9,7 @@ function Person(firstname, lastname, health, strength) {
 }
 
 player = new Person('Alex', 'Doe', "100", "2");
-
+//initializing game
 var changeName = function() {
     var name = document.getElementById("nameField").value;
     document.getElementById("playerName").innerHTML = name;
@@ -28,6 +28,8 @@ var changeName = function() {
     "! Are you ready to begin a new Journey? Take a step forward..";
 };
 
+//world 1, which contains enemies and challenge properties as well as challenge and chack answer methods
+var tempProgress = 0;
 var section1 = {
     location: "Wicked Forest",
     progress: 0,
@@ -58,7 +60,7 @@ var section1 = {
         challenge10: {question: "You see an small enemy and believe you can win easily..",
                     solution: "fight"},
     },
-    
+    //challenge method - chooses a random challenge property and outputs it's value
     challenge: function() {
         document.getElementById("nextIcons").style.display = "none"; //remove nextIcon
         document.getElementById("combatIcons").style.display = "none"; //remove combatIcons
@@ -89,6 +91,7 @@ var section1 = {
         correctAnswer = selectedChallenge.solution;
             console.log(correctAnswer);
 
+        //gives functionality to answer types
         document.getElementById('forward').onclick = function changeContent() {
             selectedAnswer = 'forward';
             console.log()
@@ -101,28 +104,42 @@ var section1 = {
         }
 
     },
+
+    //checks if challenge solution is correct. If not, you are ambushed. checks progress, if 100 then you win.
     checkAnswer: function() {
         if (correctAnswer === selectedAnswer) {
-            document.getElementById("dialog").innerHTML = "Success!!!"
-            section1.progress = section1.progress + Math.floor((Math.random() * 10) + 1);
+            tempProgress = Math.floor((Math.random() * 10) + 1);
+            section1.progress = section1.progress + tempProgress;
+            document.getElementById("dialog").innerHTML = "Success!! " + tempProgress + " progress made!" 
+            if (4 < Math.floor((Math.random() * 6) + 1)) {
+                document.getElementById("progressInfo").innerHTML = section1.progress;
+                tempProgress = 0;
+                setTimeout(function() {document.getElementById("dialog").innerHTML = "Watch out!"}, 3000)
+                setTimeout(function() { playerAttacked(); },5000)
+                return
+            } else {
+
+            }
             if (99 < section1.progress) {
                 document.getElementById("dialog").innerHTML = "Congratulations! You've successfully escaped the Wicked Forest";
-                setTimeout(function() { document.location.reload(true); },2000)               
+                setTimeout(function() { document.location.reload(true); },3000)               
                     
             } else{
                 document.getElementById("progressInfo").innerHTML = section1.progress;
-                setTimeout(function() { section1.challenge(); },2000)
+                tempProgress = 0;
+                document.getElementById("commandIcons").style.display = "none";
+                setTimeout(function() { section1.challenge(); },3000)
             }
         } else { 
-            console.log("Wrong!!!");
-            setTimeout(function() { playerAttacked(); },2000)
+            document.getElementById("dialog").innerHTML = "Uh oh..."
+            document.getElementById("commandIcons").style.display = "none";
+            setTimeout(function() { playerAttacked(); },3000)
         }
     }
 };
 
-
+//sequence when ambushed
 var selectedName;
-
 function playerAttacked() {
     document.getElementById("commandIcons").style.display = "none"; //remove commandIcon
     //document.getElementById("combatIcons").style.display = "block"; //add combatIcon
@@ -155,55 +172,65 @@ function playerAttacked() {
 
 var overallDamageGiven = 0;
 var overallDamageTaken = 0;
+var sequences = 0;
 function combatSequence () {
     
-    document.getElementById("dialog").innerHTML = "You are now fighting " + selectedName.name;
+    document.getElementById("dialog").innerHTML = "<b>Fighting</b>: " + selectedName.name
+        + "<br><b>Lvl</b>: " + selectedName.level + " <b>Atk</b>: " + selectedName.attack + " <b>HP</b>: " + selectedName.health;
     document.getElementById("combatIcons").style.display = "block";
-
+    //sdfvkasbeldjkblvnesdlgvkbsendlfgvjnsedfl3vbjngsdlfkjvbnsldfg
+    //fight sequence 
     document.getElementById("attack").onclick = function () {
         for(i = selectedName.health; i > 0; i--) {
             (function(){
+                document.getElementById("combatIcons").style.display = "none";
                 selectedName.health = selectedName.health - player.strength;
                 i = selectedName.health;
                 player.health = player.health - selectedName.attack;
                 overallDamageGiven = overallDamageGiven + player.strength;
-                overallDamageTaken = overallDamageTaken + selectedName.attack;
+                overallDamageTaken = overallDamageTaken + selectedName.attack;              
                 console.log(selectedName)
-                console.log(overallDamageGiven)
-                console.log(overallDamageTaken)
-            })();
+                sequences = sequences + 1;
+                console.log(sequences);
+            }());
         } 
-         
-     
+        
+        //Determines if player is still alive. Game ends if not.
         if (selectedName.health <= 1) {
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You dealt " + overallDamageGiven + " damage to " + selectedName.name; }, 1000)
+            sequences = sequences + 1; //to factor in one sequence that does not get counted in the for loop
+            overallDamageGiven = overallDamageGiven + player.strength; //to factor in one attack that does not get counted in the for loop
+            document.getElementById("dialog").innerHTML = "After " + sequences + " battle sequences"; 
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "You dealt " + overallDamageGiven + " damage to " + selectedName.name; }, 3000)
             document.getElementById("heathInfo").innerHTML = player.health;
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You received " + overallDamageTaken + " damage"; }, 2500)
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "Congratulations, you've won the fight!!"; }, 4000)
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "You received " + overallDamageTaken + " damage"; }, 7000)
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "Congratulations, you've won the fight!!"; }, 11000)
             setTimeout(function() {
+                sequences = 0;
                 overallDamageGiven = 0;
                 overallDamageTaken = 0;
                 section1.challenge()
-            }, 5500)
+            }, 14000)
         } else if (player.health <= 0) {
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You Died..."; }, 1000)
-            setTimeout(function() { document.location.reload(true); }, 3000)
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "You Died..."; }, 14000)
+            setTimeout(function() { document.location.reload(true); }, 15000)
         }
     };
 
+    //Attempts to run away. 50/50 chance.
     document.getElementById("runAway").onclick = function () {
+        document.getElementById("combatIcons").style.display = "none";
         var runChance = Math.floor((Math.random() * 2) + 0);
         if (runChance == true) {
             document.getElementById("dialog").innerHTML = "You escaped!!";
             setTimeout(function() { section1.challenge(); }, 2000)
         } else { 
-            document.getElementById("dialog").innerHTML = "You could not escape!";
+            document.getElementById("dialog").innerHTML = "You could not escape! <br>" + selectedName.attack + " damage taken";
+            player.health = player.health - selectedName.attack;
+            document.getElementById("heathInfo").innerHTML = player.health;
             setTimeout(function() { combatSequence(); }, 2000)
         }
     };
     
-
-
 };
 
 
