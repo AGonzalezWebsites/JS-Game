@@ -9,6 +9,10 @@ function Person(firstname, lastname, health, strength) {
 }
 
 player = new Person('Alex', 'Doe', "100", "2");
+var attackSound = new Audio('sounds/attack.wav');
+var enemyRoar = new Audio('sounds/enemyRoar.wav');
+var forestChallengeMusic = new Audio('sounds/forestChallengeMusic.wav', "none", 0, 0, -1, 0.5);
+var forestCombatMusic = new Audio('sounds/forestBattle.wav', "none", 0, 0, -1, 0.1);
 //initializing game
 var changeName = function() {
     var name = document.getElementById("nameField").value;
@@ -65,6 +69,7 @@ var section1 = {
         document.getElementById("nextIcons").style.display = "none"; //remove nextIcon
         document.getElementById("combatIcons").style.display = "none"; //remove combatIcons
         document.getElementById("commandIcons").style.display = "block"; //add commandIcon
+        forestChallengeMusic.play();
             a = Math.floor((Math.random() * 10) + 1);
         if (a === 1) {
             selectedChallenge = section1.challenges.challenge1;
@@ -115,7 +120,7 @@ var section1 = {
                 document.getElementById("progressInfo").innerHTML = section1.progress;
                 tempProgress = 0;
                 setTimeout(function() {document.getElementById("dialog").innerHTML = "Watch out!"}, 3000)
-                setTimeout(function() { playerAttacked(); },5000)
+                setTimeout(function() {forestChallengeMusic.pause(); playerAttacked(); },5000)
                 return
             } else {
 
@@ -133,7 +138,7 @@ var section1 = {
         } else { 
             document.getElementById("dialog").innerHTML = "Uh oh..."
             document.getElementById("commandIcons").style.display = "none";
-            setTimeout(function() { playerAttacked(); },3000)
+            setTimeout(function() { forestChallengeMusic.pause(); playerAttacked(); },3000)
         }
     }
 };
@@ -141,6 +146,7 @@ var section1 = {
 //sequence when ambushed
 var selectedName;
 function playerAttacked() {
+    forestCombatMusic.play();
     document.getElementById("commandIcons").style.display = "none"; //remove commandIcon
     //document.getElementById("combatIcons").style.display = "block"; //add combatIcon
     a = Math.floor((Math.random() * 3) + 1);
@@ -152,7 +158,8 @@ function playerAttacked() {
     } else if (a === 3) {
         selectedName = section1.enemies.enemy3;
     }
-
+    enemyRoar.play();
+    attackSound.play();
     document.getElementById("dialog").innerHTML ="You were ambushed by " + selectedName.name + " and took " + selectedName.attack + " damage";
     player.health = player.health - selectedName.attack;
     document.getElementById("heathInfo").innerHTML = player.health;
@@ -174,13 +181,14 @@ var overallDamageGiven = 0;
 var overallDamageTaken = 0;
 var sequences = 0;
 function combatSequence () {
-    
     document.getElementById("dialog").innerHTML = "<b>Fighting</b>: " + selectedName.name
         + "<br><b>Lvl</b>: " + selectedName.level + " <b>Atk</b>: " + selectedName.attack + " <b>HP</b>: " + selectedName.health;
     document.getElementById("combatIcons").style.display = "block";
     //sdfvkasbeldjkblvnesdlgvkbsendlfgvjnsedfl3vbjngsdlfkjvbnsldfg
     //fight sequence 
     document.getElementById("attack").onclick = function () {
+        attackSound.play();
+        enemyRoar.play();
         for(i = selectedName.health; i > 0; i--) {
             (function(){
                 document.getElementById("combatIcons").style.display = "none";
@@ -208,6 +216,7 @@ function combatSequence () {
                 sequences = 0;
                 overallDamageGiven = 0;
                 overallDamageTaken = 0;
+                forestCombatMusic.pause();
                 section1.challenge()
             }, 14000)
         } else if (player.health <= 0) {
@@ -222,11 +231,15 @@ function combatSequence () {
         var runChance = Math.floor((Math.random() * 2) + 0);
         if (runChance == true) {
             document.getElementById("dialog").innerHTML = "You escaped!!";
+            forestCombatMusic.play();
+            forestCombatMusic.pause();
             setTimeout(function() { section1.challenge(); }, 2000)
         } else { 
             document.getElementById("dialog").innerHTML = "You could not escape! <br>" + selectedName.attack + " damage taken";
             player.health = player.health - selectedName.attack;
             document.getElementById("heathInfo").innerHTML = player.health;
+            attackSound.play();
+            enemyRoar.play();
             setTimeout(function() { combatSequence(); }, 2000)
         }
     };
