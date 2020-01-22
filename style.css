@@ -23,6 +23,16 @@ i.fas,
 i.fab,
 i.far {
     color: black;
+    background: rgba(245, 244, 243, 0.89);
+    border: 2px solid black;
+    border-radius: 25px;
+    margin: 5px;
+}
+
+i.fas:hover,
+i.fab:hover,
+i.far:hover {
+    background: silver;
 }
 
 .fa-smile-beam {
@@ -55,9 +65,36 @@ h1 {
     top: 10%;
     height: 500px;
     width: 400px;
-    background-color: white;
+    background: #FFFFFF;
+    background: -webkit-linear-gradient(to top, #FFFFFF, #bbbbbb);
+    background: -moz-linear-gradient(to top, #FFFFFF, #bbbbbb);
+    background: linear-gradient(to top, rgb(214, 207, 197), #ffffff);
     border: 1px solid black;
+    border-radius: 5px;
 }
+
+.topBox {
+    display: block;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 10px 10px 0 10px;
+    height: 200px;
+    background: rgba(245, 244, 243, 0.89);
+    text-align: center;
+}
+
+#playerSubmit > button {
+    height: 20px;
+    width: 60px;
+    text-align: center;
+    margin: auto;
+    justify-content: center;
+}
+
+
+
+
+
 
 #face {
     display: none;
@@ -65,39 +102,40 @@ h1 {
     height: 30px;
     width: 30px;
     color: black;
+    border: 0px solid black;
 }
 
 #playerInfo {
     display: none;
-    position: relative;
+    position: absolute;
+    left: 20px;
 }
 
 #settingInfo {
     display: none;
     position: absolute;
-    right: 5px;
+    right: 20px;
     top: 50px;
 }
 
-#playerSubmit > button {
-    height: 20px;
-    width: 60px;
-
-}
-
 .dialogBox {
-    display: block;
+    display: flex;
     position: relative;
+    background: rgba(245, 244, 243, 0.89);
+    border: 1px solid black;
+    border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
-    width: 300px;
-    top: 10%;
-
+    width: 325px;
+    height: 125px;
+    top: 20px;
 }
 
 #dialog {
+    margin: auto;
     font-size: 20px;
     text-align: center;
+    padding: 5px;
 }
 
 .nextBox {
@@ -149,9 +187,6 @@ h1 {
 #commandIcons {
     display: none;
 }
-
-
-
 
 .combatBox {
     display: block;
