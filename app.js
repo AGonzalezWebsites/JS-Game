@@ -70,7 +70,7 @@ var section1 = {
         challenge9: {question: "You hear humming behind trees in the shadows. This can't be good.. proceed forward or run away?",
                     solution: "run"},
         challenge10: {question: "You see an small enemy and believe you can win easily..",
-                    solution: "fight"},
+                    solution: "forward"},
     },
     //challenge method - chooses a random challenge property and outputs it's value
     challenge: function() {
@@ -124,7 +124,6 @@ var section1 = {
     checkAnswer: function() {
         if (correctAnswer === selectedAnswer) {
             tempProgress = Math.floor((Math.random() * 10) + 1);
-            section1.progress = section1.progress + tempProgress;
             document.getElementById("dialog").innerHTML = "Success!! " + tempProgress + " progress made!" 
             if (4 < Math.floor((Math.random() * 6) + 1)) {
                 document.getElementById("progressInfo").innerHTML = section1.progress;
@@ -133,17 +132,28 @@ var section1 = {
                 setTimeout(function() {forestChallengeMusic.pause(); playerAttacked(); },5000)
                 return
             } else {
-
+            
             }
             if (99 < section1.progress) {
                 document.getElementById("dialog").innerHTML = "Congratulations! You've successfully escaped the Wicked Forest";
                 setTimeout(function() { document.location.reload(true); },3000)               
                     
-            } else{
-                document.getElementById("progressInfo").innerHTML = section1.progress;
-                tempProgress = 0;
-                document.getElementById("commandIcons").style.display = "none";
-                setTimeout(function() { section1.challenge(); },3000)
+            } else{ 
+                let atPercentage = 0;
+                for (i = 0; i < tempProgress; i++) {
+                    (function(i) {
+                        setTimeout(function() {
+                            section1.progress = section1.progress + i;
+                            document.getElementById("progressInfo").style.width = i + '%'; 
+                            document.getElementById("commandIcons").style.display = "none";
+                            console.log(i);
+                            console.log(document.getElementById("progressInfo").style.width);
+                            console.log(section1.progress);
+                            console.log("-------------");
+                        }, 100 * i);
+                    }(i));
+                }
+                setTimeout(function() { tempProgress = 0; section1.challenge(); },3000)
             }
         } else { 
             document.getElementById("dialog").innerHTML = "Uh oh..."

@@ -45,7 +45,9 @@ i.far:hover {
 }
 
 h3 {
-    font-size: 20px;
+    font-size: 12px;
+    margin: 0;
+    padding:0;
 }
 
 h2 {
@@ -120,6 +122,27 @@ h1 {
     position: absolute;
     right: 20px;
     top: 70px;
+}
+
+.levelProgressContainer {
+    width: 150px;
+    height: 20px;
+    background-color: gray;
+    border-radius: 25px;
+    border: 1px inset black;
+}
+
+.levelProgressContainer > h2 {
+    display: inline;
+    position: absolute;
+    left: 20px;
+}
+
+#progressInfo {
+    background: green;
+    height: 100%;
+    width: 0%;
+    border-radius: 25px 0 0 25px;
 }
 
 .dialogBox {
