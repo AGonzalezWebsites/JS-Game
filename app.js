@@ -1,3 +1,11 @@
+/*
+Things to Add:
+1) Progress Bar for Experience and Level Progress
+2) Additional Moves after leveling up
+3) Large top-down terrain background that moves down with progression
+
+*/
+
 function Person(firstname, lastname, health, strength) {
 
     console.log(this)
@@ -100,11 +108,13 @@ var section1 = {
         document.getElementById('forward').onclick = function changeContent() {
             selectedAnswer = 'forward';
             console.log()
-            section1.checkAnswer(document.getElementById('forward'));
+            document.getElementById("commandIcons").style.display = "none"; //add commandIcon
+            section1.checkAnswer();
         }
         document.getElementById('run').onclick = function changeContent() {
             selectedAnswer = 'run';
             console.log(selectedAnswer)
+            document.getElementById("commandIcons").style.display = "none"; //add commandIcon
             section1.checkAnswer();
         }
 
@@ -176,52 +186,55 @@ function playerAttacked() {
         setTimeout(function() { combatSequence(); }, 4000)
     }
 }
-
+  
+//fight sequence 
 var overallDamageGiven = 0;
 var overallDamageTaken = 0;
 var sequences = 0;
-function combatSequence () {
+function combatSequence() {
     document.getElementById("dialog").innerHTML = "<b>Fighting</b>: " + selectedName.name
         + "<br><b>Lvl</b>: " + selectedName.level + " <b>Atk</b>: " + selectedName.attack + " <b>HP</b>: " + selectedName.health;
     document.getElementById("combatIcons").style.display = "block";
     //sdfvkasbeldjkblvnesdlgvkbsendlfgvjnsedfl3vbjngsdlfkjvbnsldfg
-    //fight sequence 
+
     document.getElementById("attack").onclick = function () {
         attackSound.play();
         enemyRoar.play();
-        for(i = selectedName.health; i > 0; i--) {
-            (function(){
-                document.getElementById("combatIcons").style.display = "none";
-                selectedName.health = selectedName.health - player.strength;
-                i = selectedName.health;
-                player.health = player.health - selectedName.attack;
-                overallDamageGiven = overallDamageGiven + player.strength;
-                overallDamageTaken = overallDamageTaken + selectedName.attack;              
-                console.log(selectedName)
-                sequences = sequences + 1;
-                console.log(sequences);
-            }());
-        } 
         
+        document.getElementById("combatIcons").style.display = "none";
+        selectedName.health = selectedName.health - player.strength;
+        i = selectedName.health;
+        player.health = player.health - selectedName.attack;
+        overallDamageGiven = overallDamageGiven + player.strength;
+        overallDamageTaken = overallDamageTaken + selectedName.attack;              
+        console.log(selectedName)
+        sequences = sequences + 1;
+        console.log(sequences);
+            
         //Determines if player is still alive. Game ends if not.
-        if (selectedName.health <= 1) {
-            sequences = sequences + 1; //to factor in one sequence that does not get counted in the for loop
-            overallDamageGiven = overallDamageGiven + player.strength; //to factor in one attack that does not get counted in the for loop
-            document.getElementById("dialog").innerHTML = "After " + sequences + " battle sequences"; 
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You dealt " + overallDamageGiven + " damage to " + selectedName.name; }, 3000)
+        if (selectedName.health >= 1) {
+
+            document.getElementById("dialog").innerHTML = "You dealt " + player.strength + " damage to " + selectedName.name; 
             document.getElementById("heathInfo").innerHTML = player.health;
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You received " + overallDamageTaken + " damage"; }, 7000)
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "Congratulations, you've won the fight!!"; }, 11000)
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "You received " + selectedName.attack + " damage"; }, 3000)
+            setTimeout(function() { combatSequence(); }, 7000)
+
+
+        } else if (player.health <= 0) {
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "You Died..."; }, 14000)
+            setTimeout(function() { document.location.reload(true); }, 15000)
+        } else if  (selectedName.health <= 1) {
+            document.getElementById("dialog").innerHTML = "Congratulations, you've won the fight!!"; 
+            document.getElementById("heathInfo").innerHTML = player.health;
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "You Damage Dealt: " + overallDamageGiven; }, 4000)
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Received: " + overallDamageTaken; }, 8000)
             setTimeout(function() {
                 sequences = 0;
                 overallDamageGiven = 0;
                 overallDamageTaken = 0;
                 forestCombatMusic.pause();
                 section1.challenge()
-            }, 14000)
-        } else if (player.health <= 0) {
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You Died..."; }, 14000)
-            setTimeout(function() { document.location.reload(true); }, 15000)
+            }, 12000)
         }
     };
 
