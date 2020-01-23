@@ -32,7 +32,6 @@ var changeName = function() {
     document.getElementById("nextIcons").style.display = "inline-block";
     document.getElementById("settingInfo").style.display = "inline";
     document.getElementById("locationInfo").innerHTML = section1.location;
-    document.getElementById("progressInfo").innerHTML = section1.progress;
     document.getElementById("levelInfo").innerHTML = player.level;
     document.getElementById("heathInfo").innerHTML = player.health;
     document.getElementById("strengthInfo").innerHTML = player.strength;
@@ -41,6 +40,7 @@ var changeName = function() {
 };
 
 //world 1, which contains enemies and challenge properties as well as challenge and chack answer methods
+var a = 0;
 var tempProgress = 0;
 var section1 = {
     location: "Wicked Forest",
@@ -51,8 +51,16 @@ var section1 = {
         enemy3: {name: "Colossal Beetle", level: 1, attack: 8, health: 9},
     },
     challenges: {
-        challenge1: {question: "A creature spots you, but seems more intrigued than anything.. choose an action..", 
-                    solution: "forward"},
+        challenge1: {question: "A creature spots you, but seems more intrigued than anything.. choose an action..",
+                        forward: function() {
+                            document.getElementById("dialog").innerHTML = "You Pressed Forward"
+                            setTimeout(section1.checkAnswer(), 3000);
+                        },
+                        avoid: function() {
+                            document.getElementById("dialog").innerHTML = "You were scared"
+                            setTimeout(section1.checkAnswer(), 3000);
+                        },
+                    },
         challenge2: {question: "A wizard appears and seems to be summoning a powerful creature..",
                     solution: "run"},
         challenge3: {question: "You see a small group of stranded survivors. They have weapons.. you're not sure if you've been spotted..",
@@ -76,9 +84,10 @@ var section1 = {
     challenge: function() {
         document.getElementById("nextIcons").style.display = "none"; //remove nextIcon
         document.getElementById("combatIcons").style.display = "none"; //remove combatIcons
+        document.getElementById("forestPic").style.display = "inline";
         document.getElementById("commandIcons").style.display = "block"; //add commandIcon
         forestChallengeMusic.play();
-            a = Math.floor((Math.random() * 10) + 1);
+            a = Math.floor((Math.random() * 1) + 1);
         if (a === 1) {
             selectedChallenge = section1.challenges.challenge1;
         } else if (a === 2) {
@@ -101,56 +110,63 @@ var section1 = {
             selectedChallenge = section1.challenges.challenge10;
         } 
         document.getElementById("dialog").innerHTML = selectedChallenge.question;
-        correctAnswer = selectedChallenge.solution;
-            console.log(correctAnswer);
 
         //gives functionality to answer types
         document.getElementById('forward').onclick = function changeContent() {
-            selectedAnswer = 'forward';
-            console.log()
             document.getElementById("commandIcons").style.display = "none"; //add commandIcon
-            section1.checkAnswer();
+            selectedChallenge.forward();
         }
         document.getElementById('run').onclick = function changeContent() {
-            selectedAnswer = 'run';
-            console.log(selectedAnswer)
             document.getElementById("commandIcons").style.display = "none"; //add commandIcon
-            section1.checkAnswer();
+            selectedChallenge.avoid();
+            //section1.checkAnswer();
         }
 
     },
 
     //checks if challenge solution is correct. If not, you are ambushed. checks progress, if 100 then you win.
     checkAnswer: function() {
-        if (correctAnswer === selectedAnswer) {
+        if (selectedChallenge === selectedChallenge) {
             tempProgress = Math.floor((Math.random() * 10) + 1);
             document.getElementById("dialog").innerHTML = "Success!! " + tempProgress + " progress made!" 
             if (4 < Math.floor((Math.random() * 6) + 1)) {
-                document.getElementById("progressInfo").innerHTML = section1.progress;
-                tempProgress = 0;
-                setTimeout(function() {document.getElementById("dialog").innerHTML = "Watch out!"}, 3000)
-                setTimeout(function() {forestChallengeMusic.pause(); playerAttacked(); },5000)
-                return
-            } else {
-            
-            }
-            if (99 < section1.progress) {
-                document.getElementById("dialog").innerHTML = "Congratulations! You've successfully escaped the Wicked Forest";
-                setTimeout(function() { document.location.reload(true); },3000)               
-                    
-            } else{ 
-                let atPercentage = 0;
                 for (i = 0; i < tempProgress; i++) {
                     (function(i) {
                         setTimeout(function() {
-                            section1.progress = section1.progress + i;
-                            document.getElementById("progressInfo").style.width = i + '%'; 
+                            let atPercentage = section1.progress + 1;;
+                            section1.progress = atPercentage
+                            document.getElementById("progressInfo").style.width = atPercentage + '%'; 
                             document.getElementById("commandIcons").style.display = "none";
                             console.log(i);
                             console.log(document.getElementById("progressInfo").style.width);
                             console.log(section1.progress);
                             console.log("-------------");
-                        }, 100 * i);
+                        }, 300 * i);
+                    }(i));
+                }
+                setTimeout(function() {document.getElementById("dialog").innerHTML = "Watch out!"}, 3000)
+                setTimeout(function() {forestChallengeMusic.pause(); document.getElementById("forestPic").style.display = "none"; playerAttacked(); }, 5000)
+                return
+            } else {
+            
+            }
+            if (section1.progress > 99) {
+                document.getElementById("dialog").innerHTML = "Congratulations! You've successfully escaped the Wicked Forest";
+                setTimeout(function() { document.location.reload(true); },3000)               
+                return    
+            } else { 
+                for (i = 0; i < tempProgress; i++) {
+                    (function(i) {
+                        setTimeout(function() {
+                            let atPercentage = section1.progress + 1;;
+                            section1.progress = atPercentage
+                            document.getElementById("progressInfo").style.width = atPercentage + '%'; 
+                            document.getElementById("commandIcons").style.display = "none";
+                            console.log(i);
+                            console.log(document.getElementById("progressInfo").style.width);
+                            console.log(section1.progress);
+                            console.log("-------------");
+                        }, 300 * i);
                     }(i));
                 }
                 setTimeout(function() { tempProgress = 0; section1.challenge(); },3000)
@@ -158,14 +174,16 @@ var section1 = {
         } else { 
             document.getElementById("dialog").innerHTML = "Uh oh..."
             document.getElementById("commandIcons").style.display = "none";
-            setTimeout(function() { forestChallengeMusic.pause(); playerAttacked(); },3000)
+            setTimeout(function() { forestChallengeMusic.pause(); document.getElementById("forestPic").style.display = "none"; playerAttacked(); },3000)
         }
     }
 };
 
+
 //sequence when ambushed
 var selectedName;
 function playerAttacked() {
+    document.getElementById("wolfPic").style.display = "inline";
     forestCombatMusic.play();
     document.getElementById("commandIcons").style.display = "none"; //remove commandIcon
     //document.getElementById("combatIcons").style.display = "block"; //add combatIcon
@@ -183,7 +201,7 @@ function playerAttacked() {
     document.getElementById("dialog").innerHTML ="You were ambushed by " + selectedName.name + " and took " + selectedName.attack + " damage";
     player.health = player.health - selectedName.attack;
     document.getElementById("heathInfo").innerHTML = player.health;
-
+    section1.enemies.tempEnemyHealth = selectedName.health;
     if (player.health < 1) {
         document.getElementById("dialog").innerHTML = "You Have Died!!!";
         setTimeout(function() { document.location.reload(true); }, 2000)
@@ -198,12 +216,13 @@ function playerAttacked() {
 }
   
 //fight sequence 
+
 var overallDamageGiven = 0;
 var overallDamageTaken = 0;
 var sequences = 0;
 function combatSequence() {
     document.getElementById("dialog").innerHTML = "<b>Fighting</b>: " + selectedName.name
-        + "<br><b>Lvl</b>: " + selectedName.level + " <b>Atk</b>: " + selectedName.attack + " <b>HP</b>: " + selectedName.health;
+        + "<br><b>Lvl</b>: " + selectedName.level + " <b>Atk</b>: " + selectedName.attack + " <b>HP</b>: " + section1.enemies.tempEnemyHealth;
     document.getElementById("combatIcons").style.display = "block";
     //sdfvkasbeldjkblvnesdlgvkbsendlfgvjnsedfl3vbjngsdlfkjvbnsldfg
 
@@ -212,8 +231,8 @@ function combatSequence() {
         enemyRoar.play();
         
         document.getElementById("combatIcons").style.display = "none";
-        selectedName.health = selectedName.health - player.strength;
-        i = selectedName.health;
+        section1.enemies.tempEnemyHealth = section1.enemies.tempEnemyHealth - player.strength;
+        i = section1.enemies.tempEnemyHealth;
         player.health = player.health - selectedName.attack;
         overallDamageGiven = overallDamageGiven + player.strength;
         overallDamageTaken = overallDamageTaken + selectedName.attack;              
@@ -222,26 +241,28 @@ function combatSequence() {
         console.log(sequences);
             
         //Determines if player is still alive. Game ends if not.
-        if (selectedName.health >= 1) {
+        if (section1.enemies.tempEnemyHealth >= 1 && player.health >= 1) {
 
             document.getElementById("dialog").innerHTML = "You dealt " + player.strength + " damage to " + selectedName.name; 
             document.getElementById("heathInfo").innerHTML = player.health;
             setTimeout(function() { document.getElementById("dialog").innerHTML = "You received " + selectedName.attack + " damage"; }, 3000)
-            setTimeout(function() { combatSequence(); }, 7000)
-
+            setTimeout(function() { combatSequence(); }, 6000)
+            return
 
         } else if (player.health <= 0) {
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You Died..."; }, 14000)
-            setTimeout(function() { document.location.reload(true); }, 15000)
-        } else if  (selectedName.health <= 1) {
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "You Died..."; }, 1)
+            setTimeout(function() { document.location.reload(true); }, 5000)
+            return
+        } else if  (section1.enemies.tempEnemyHealth <= 1) {
             document.getElementById("dialog").innerHTML = "Congratulations, you've won the fight!!"; 
             document.getElementById("heathInfo").innerHTML = player.health;
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You Damage Dealt: " + overallDamageGiven; }, 4000)
+            setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Dealt: " + overallDamageGiven; }, 4000)
             setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Received: " + overallDamageTaken; }, 8000)
             setTimeout(function() {
                 sequences = 0;
                 overallDamageGiven = 0;
                 overallDamageTaken = 0;
+                document.getElementById("wolfPic").style.display = "none";
                 forestCombatMusic.pause();
                 section1.challenge()
             }, 12000)
