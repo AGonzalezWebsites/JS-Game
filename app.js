@@ -17,10 +17,11 @@ function Person(firstname, lastname, health, strength) {
 }
 
 player = new Person('Alex', 'Doe', "100", "2");
-var attackSound = new Audio('sounds/attack.wav');
-var enemyRoar = new Audio('sounds/enemyRoar.wav');
-var forestChallengeMusic = new Audio('sounds/forestChallengeMusic.wav', "none", 0, 0, -1, 0.5);
-var forestCombatMusic = new Audio('sounds/forestBattle.wav', "none", 0, 0, -1, 0.1);
+var forestChallengeMusic = document.getElementById("audio1");
+var forestCombatMusic = document.getElementById("audio2");
+var enemyRoar = document.getElementById("audio3");
+var attackSound = document.getElementById("audio4");
+var fightWon = document.getElementById("audio5");
 //initializing game
 var changeName = function() {
     var name = document.getElementById("nameField").value;
@@ -36,19 +37,19 @@ var changeName = function() {
     document.getElementById("heathInfo").innerHTML = player.health;
     document.getElementById("strengthInfo").innerHTML = player.strength;
     document.getElementById("dialog").innerHTML = "Welcome," + ' ' + name + 
-    "! Are you ready to begin a new Journey? Take a step forward..";
+    "! Enter the " + section1.location + " to begin";
 };
 
 //world 1, which contains enemies and challenge properties as well as challenge and chack answer methods
 var a = 0;
 var tempProgress = 0;
 var section1 = {
-    location: "Wicked Forest",
+    location: "Enchanted Forest",
     progress: 0,
     enemies: {
-        enemy1: {name: 'Wolfy', level: 1, attack: 6, health: 5},
-        enemy2: {name: 'Snaky', level: 1, attack: 4, health: 3},
-        enemy3: {name: "Colossal Beetle", level: 1, attack: 8, health: 9},
+        enemy1: {name: 'Vengeful Wolf', level: 1, attack: 2, health: 5, picID: "wolf"},
+        enemy2: {name: 'Enraged Serpent', level: 1, attack: 5, health: 4, picID: "snake"},
+        enemy3: {name: "Colossal Beetle", level: 1, attack: 6, health: 9, picID: "beetle"},
     },
     challenges: {
         challenge1: {question: "A creature spots you, but seems more intrigued than anything.. choose an action..",
@@ -183,7 +184,6 @@ var section1 = {
 //sequence when ambushed
 var selectedName;
 function playerAttacked() {
-    document.getElementById("wolfPic").style.display = "inline";
     forestCombatMusic.play();
     document.getElementById("commandIcons").style.display = "none"; //remove commandIcon
     //document.getElementById("combatIcons").style.display = "block"; //add combatIcon
@@ -196,6 +196,7 @@ function playerAttacked() {
     } else if (a === 3) {
         selectedName = section1.enemies.enemy3;
     }
+    document.getElementById(selectedName.picID).style.display = "inline";
     enemyRoar.play();
     attackSound.play();
     document.getElementById("dialog").innerHTML ="You were ambushed by " + selectedName.name + " and took " + selectedName.attack + " damage";
@@ -229,7 +230,7 @@ function combatSequence() {
     document.getElementById("attack").onclick = function () {
         attackSound.play();
         enemyRoar.play();
-        
+        document.getElementById(selectedName.picID).style.animation = "attacked 1s linear";
         document.getElementById("combatIcons").style.display = "none";
         section1.enemies.tempEnemyHealth = section1.enemies.tempEnemyHealth - player.strength;
         i = section1.enemies.tempEnemyHealth;
@@ -256,14 +257,15 @@ function combatSequence() {
         } else if  (section1.enemies.tempEnemyHealth <= 1) {
             document.getElementById("dialog").innerHTML = "Congratulations, you've won the fight!!"; 
             document.getElementById("heathInfo").innerHTML = player.health;
+            fightWon.play();
+            forestCombatMusic.pause();
             setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Dealt: " + overallDamageGiven; }, 4000)
             setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Received: " + overallDamageTaken; }, 8000)
             setTimeout(function() {
                 sequences = 0;
                 overallDamageGiven = 0;
                 overallDamageTaken = 0;
-                document.getElementById("wolfPic").style.display = "none";
-                forestCombatMusic.pause();
+                document.getElementById(selectedName.picID).style.display = "none";
                 section1.challenge()
             }, 12000)
         }
@@ -277,13 +279,12 @@ function combatSequence() {
             document.getElementById("dialog").innerHTML = "You escaped!!";
             forestCombatMusic.play();
             forestCombatMusic.pause();
-            setTimeout(function() { section1.challenge(); }, 2000)
+            setTimeout(function() { document.getElementById(selectedName.picID).style.display = "none"; section1.challenge(); }, 2000)
         } else { 
             document.getElementById("dialog").innerHTML = "You could not escape! <br>" + selectedName.attack + " damage taken";
             player.health = player.health - selectedName.attack;
             document.getElementById("heathInfo").innerHTML = player.health;
             attackSound.play();
-            enemyRoar.play();
             setTimeout(function() { combatSequence(); }, 2000)
         }
     };
