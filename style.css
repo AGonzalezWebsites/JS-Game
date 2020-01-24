@@ -98,7 +98,7 @@ h1 {
     border-radius: 5px;
     margin: 10px 10px 0 10px;
     height: 200px;
-    background: rgba(245, 244, 243, 0.80);
+    background: rgba(245, 244, 243, 0.70);
     text-align: center;
 }
 
@@ -218,6 +218,31 @@ h1 {
     z-index: 5;
 }
 
+.initialNextBox {
+  display: none;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  width: 399px;
+  bottom: 1px;
+  text-align: center;
+}
+
+.initialNextBox > i {
+  font-size: 50px;
+  height: 50px;
+  width: 50px;
+  padding: 10px;;
+  margin-bottom: 40px;
+  display: inline-block;
+  color: black;
+  
+}
+
+#initialNextIcons {
+  display: none;
+}
+
 .nextBox {
     display: block;
     position: absolute;
@@ -233,7 +258,7 @@ h1 {
     height: 50px;
     width: 50px;
     padding: 10px;;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     display: inline-block;
     color: black;
     
