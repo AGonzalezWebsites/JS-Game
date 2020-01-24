@@ -15,9 +15,9 @@
         <audio id="audio4" src="sounds/attack.mp3"></audio>
         <audio id="audio5" src="sounds/fightWon.mp3"></audio>
     <div class="playArea">
-        <img id=wolf class="element-animation" src="/img/wolf.jpg" alt="">
-        <img id=beetle class="element-animation" src="/img/wolf.jpg" alt="">
-        <img id=snake class="element-animation" src="/img/snake.jpg" alt="">
+        <img id=wolf class="elementAnimation" src="/img/wolf.jpg" alt="">
+        <img id=beetle class="elementAnimation" src="/img/beetle.jpg" alt="">
+        <img id=snake class="elementAnimation" src="/img/snake.jpg" alt="">
         <img id=forestPic src="/img/forest.jpg" alt="">
         <div class="topBox" id="player">
             <i id="face" class="far fa-smile-beam"></i>
@@ -28,10 +28,12 @@
             <br>
             <span id="playerInfo">
                 <h2>Level: </h2><h2 id="levelInfo">???</h2>
-                <br>
-                <h2>HP: </h2><h2 id="heathInfo">???</h2>
-                <br>
-                <h2>Atk: </h2><h2 id="strengthInfo">???</h2>
+                <h2 id="textSpace">HP: </h2><h2 id="heathInfo">???</h2>
+                <h2 id="textSpace">Str: </h2><h2 id="strengthInfo">???</h2>
+                <div class="playerLevelProgressContainer">
+                <h2>Experience</h2>
+                <div id="playerProgressInfo"></div>
+                    </div>
             </span>
 
             <div id="location">
@@ -39,12 +41,10 @@
                 <br>
                 <div id="settingInfo">
                     <h2>Location: </h2><h2 id="locationInfo">???</h2>
-                    <br>
                     <div class="levelProgressContainer">
                     <h2>Location Progress</h2>
                     <div id="progressInfo"></div>
                     </div>
-                    <h2>Enemies Discovered: </h2><h2 id="">???</h2>
                 </div>
             </div>
         </div>
