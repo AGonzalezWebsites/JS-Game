@@ -4,8 +4,18 @@ Things to Add:
 2) When a challenge is completed (not when avoided), delete that specific challenge property
 2) Additional Moves after leveling up
 3) Large top-down terrain background that moves down with progression
+4) Final boss when progress is 100& (if you back out, progress reduced to 70%)
 
 */
+
+(function() {
+    document.getElementById("audio1").preload;
+    document.getElementById("audio2").preload;
+    document.getElementById("audio3").preload;
+    document.getElementById("audio4").preload;
+    document.getElementById("audio5").preload;
+}());
+
 
 function Person(firstname, lastname, health, strength) {
 
@@ -70,40 +80,45 @@ var changeName = function() {
 //world 1, which contains enemies and challenge properties as well as challenge and chack answer methods
 var a = 0;
 var tempProgress = 0;
+var selectChallenge = 0;
 var section1 = {
     location: "Enchanted Forest",
     progress: 0,
     enemies: {
-        enemy1: {name: 'Vengeful Wolf', level: 1, attack: 3, health: 5, expGiven: 12, picID: "wolf"},
-        enemy2: {name: 'Enraged Serpent', level: 1, attack: 6, health: 2, expGiven: 16, picID: "snake"},
-        enemy3: {name: "Colossal Beetle", level: 1, attack: 5, health: 8, expGiven: 22, picID: "beetle"},
+        enemy1: {name: 'Vengeful Wolf', level: 1, attack: 3, health: 5, expGiven: 10, picID: "wolf"},
+        enemy2: {name: "Webbie", level: 1, attack: 1, health: 3, expGiven: 6, picID: "spiderSmall"},
+        enemy3: {name: "Beetler", level: 1, attack: 3, health: 7, expGiven: 12, picID: "beetle"},
+        enemy4: {name: 'Knight Beaver', level: 1, attack: 2, health: 4, expGiven: 8, picID: "beaver"},
+        enemy10: {name: 'Hotmush', level: 1, attack: 9, health: 3, expGiven: 18, picID: "mushroom"},
+        enemy11: {name: 'King Serpentor', level: 2, attack: 11, health: 6, expGiven: 28, picID: "snake"},
+        enemy12: {name: "Colossal Rootra", level: 2, attack: 4, health: 10, expGiven: 20, picID: "plant"},
+        enemy13: {name: "Queen Webra", level: 2, attack: 9, health: 8, expGiven: 26, picID: "spiderQueen"},
+        enemy14: {name: "Gate Keeper", level: "???", attack: 31, health: 22, expGiven: 112, picID: "wizard"},
     },
     firstChallenge: function() {forestChallengeMusic.play(); selectedChallenge = section1.challenges.challenge1; document.getElementById("initialNextIcons").style.display = "none"; section1.checkAnswer(); },
     challenges: {
         
-        challenge1: {question: "A small creature spots you, but seems more intrigued than anything.. choose an action..",
+        challenge1: {question: "A small creature spots you, but seems more intrigued than anything..",
                         forward: function() {
-                            document.getElementById("dialog").innerHTML = "You Pressed Forward"
-                            setTimeout(section1.checkAnswer(), 3000);
+                            selectChallenge = 1;
+                            this.selectedChallengeName = section1.enemies.enemy10;
+                            document.getElementById("dialog").innerHTML = "The small creature beings charging you ready to attack!!"
+                            setTimeout(playerAttacked(), 5000);
                         },
                     },
-        challenge2: {question: "A wizard appears and seems to be summoning a powerful creature..",
-                    solution: "run"},
+        challenge2: {question: "You hear a slithering from behind you. A loud sound like a boulder dragging through the forest..",
+                            forward: function() {
+                            selectChallenge = 2;
+                            this.selectedChallengeName = section1.enemies.enemy11;
+                            document.getElementById("dialog").innerHTML = "You hear a loud hiss as fangs the size of ice picks speed towards you!!"
+                            setTimeout(playerAttacked(), 5000);
+        },
+    },
         challenge3: {question: "You see a small group of stranded survivors. They have weapons.. you're not sure if you've been spotted..",
                     solution: "run"},
         challenge4: {question: "An elderly Lady spots you and waves you over, the coast seems to be clear of any monsters..",
                     solution: "forward"},
         challenge5: {question: "You see Drakie in trouble, but you can be spotted by any of the nearby creatures",
-                    solution: "forward"},
-        challenge6: {question: "You encounter a wounded man being attacked by a small creature..",
-                    solution: "forward"},
-        challenge7: {question: "A beast is asleep just off the trail, you can finish him in one blow, but will he wake up?",
-                    solution: "forward"},
-        challenge8: {question: "A young child seems to be lost. This place is danegerous. Proceed forward and help?",
-                    solution: "forward"},
-        challenge9: {question: "You hear humming behind trees in the shadows. This can't be good.. proceed forward or run away?",
-                    solution: "run"},
-        challenge10: {question: "You see an small enemy and believe you can win easily..",
                     solution: "forward"},
     },
     //challenge method - chooses a random challenge property and outputs it's value
@@ -113,7 +128,7 @@ var section1 = {
         document.getElementById("forestPic").style.display = "inline";
         document.getElementById("commandIcons").style.display = "block"; //add commandIcon
         forestChallengeMusic.play();
-            a = Math.floor((Math.random() * 1) + 1);
+            a = Math.floor((Math.random() * 2) + 1);
         if (a === 1) {
             selectedChallenge = section1.challenges.challenge1;
         } else if (a === 2) {
@@ -170,12 +185,12 @@ var section1 = {
 
     },
 
-    //checks if challenge solution is correct. If not, you are ambushed. checks progress, if 100 then you win.
+    //checks if 
     checkAnswer: function() {
         if (selectedChallenge === selectedChallenge) {
             forestChallengeMusic.play();
             document.getElementById("nextIcons").style.display = "none";
-            document.getElementById("forestPic").style.display = "block"
+            document.getElementById("forestPic").style.display = "block";
             tempProgress = Math.floor((Math.random() * 7) + 1);
             document.getElementById("commandIcons").style.display = "none";
             document.getElementById("dialog").innerHTML = tempProgress + " progress made!" 
@@ -198,7 +213,8 @@ var section1 = {
                 setTimeout(function() {forestChallengeMusic.pause(); document.getElementById("forestPic").style.display = "none"; playerAttacked(); }, 5000)
                 return
             } else {
-                if (5 < Math.floor((Math.random() * 6) + 1)) {
+                //random chance to get a challenge
+                if (3 < Math.floor((Math.random() * 6) + 1)) {
                     for (i = 0; i < tempProgress; i++) {
                         (function(i) {
                             setTimeout(function() {
@@ -255,16 +271,26 @@ var selectedName;
 function playerAttacked() {
     forestCombatMusic.play();
     document.getElementById("commandIcons").style.display = "none"; //remove commandIcon
+    document.getElementById("forestPic").style.display = "none";
     //document.getElementById("combatIcons").style.display = "block"; //add combatIcon
-    a = Math.floor((Math.random() * 3) + 1);
-
-    if (a === 1) {
+    a = Math.floor((Math.random() * 5) + 1);
+    
+    if (selectChallenge === 1) {
+        selectedName = section1.challenges.challenge1.selectedChallengeName;
+        selectChallenge = 0;
+    } else if (selectChallenge === 2) {
+        selectedName = section1.challenges.challenge2.selectedChallengeName;
+        selectChallenge = 0;
+    } else if (a === 1) {
         selectedName = section1.enemies.enemy1;
     } else if (a === 2) {
         selectedName = section1.enemies.enemy2;
     } else if (a === 3) {
         selectedName = section1.enemies.enemy3;
+    } else if (a === 4) {
+        selectedName = section1.enemies.enemy3;
     }
+
     document.getElementById(selectedName.picID).style.display = "inline";
     document.getElementById(selectedName.picID).style.animation = "attacked linear 1s";
     document.getElementById(selectedName.picID).style.animation = "enemyAttack linear 1s";
