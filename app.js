@@ -275,6 +275,7 @@ var section1 = {
                 section1.challenges.challenge5.forward();               
                 return    
             } else { 
+                document.getElementById("forestPic").style.display = "block";
                 for (i = 0; i < tempProgress; i++) {
                     (function(i) {
                         setTimeout(function() {
