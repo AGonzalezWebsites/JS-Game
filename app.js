@@ -118,8 +118,31 @@ var section1 = {
                     solution: "run"},
         challenge4: {question: "An elderly Lady spots you and waves you over, the coast seems to be clear of any monsters..",
                     solution: "forward"},
-        challenge5: {question: "You see Drakie in trouble, but you can be spotted by any of the nearby creatures",
-                    solution: "forward"},
+        challenge5: {question: "Finally.. you've reached the exit.. but..",
+                    forward: function() {
+                        selectChallenge = 5;
+                        this.selectedChallengeName = section1.enemies.enemy14;
+                        document.getElementById("commandIcons").style.display = "none";
+                        document.getElementById("dialog").innerHTML = "";
+                        setTimeout(function(){document.getElementById("dialog").innerHTML = "you see a figure slowly approaching from the other side.."}, 2000);
+                        setTimeout(function(){document.getElementById("dialog").innerHTML = "Unknown: 'You think you can leave this place? Without a true challenge?!...'"}, 10000);
+                        setTimeout(function(){document.getElementById("dialog").innerHTML = "Unknown: 'step forward and show me when you're made of...'"}, 17000);
+                        setTimeout(function(){document.getElementById("dialog").innerHTML = "Make sure you're truly ready. There is no going back if you decide to proceed."}, 24000);
+                        setTimeout(function(){
+                                document.getElementById("commandIcons").style.display = "inline-block";
+                                document.getElementById('forward').onclick = function changeContent() {playerAttacked();}
+                                document.getElementById('run').onclick = function changeContent() {
+                                    document.getElementById("dialog").innerHTML = "Come back when you're a real challenge, child.";
+                                    setTimeout(function(){document.getElementById("dialog").innerHTML = "Progress reduced to 50";}, 4000);
+                                    setTimeout(function(){
+                                        atPercentage = section1.progress - 50;
+                                        document.getElementById("progressInfo").style.width = atPercentage + '%';
+                                        section1.checkAnswer();
+                                        }, 8000);
+                                };
+                            }, 22000);
+                        }
+                    },
     },
     //challenge method - chooses a random challenge property and outputs it's value
     challenge: function() {
@@ -210,8 +233,8 @@ var section1 = {
                     }(i));
                 }
                 setTimeout(function() {document.getElementById("commandIcons").style.display = "none"; document.getElementById("dialog").innerHTML = "Watch out!"}, 3000)
-                setTimeout(function() {forestChallengeMusic.pause(); document.getElementById("forestPic").style.display = "none"; playerAttacked(); }, 5000)
-                return
+                setTimeout(function() {forestChallengeMusic.pause(); document.getElementById("forestPic").style.display = "none"; }, 5000)
+              
             } else {
                 //random chance to get a challenge
                 if (3 < Math.floor((Math.random() * 6) + 1)) {
@@ -236,9 +259,8 @@ var section1 = {
                 
 
             }
-            if (section1.progress > 99) {
-                document.getElementById("dialog").innerHTML = "Congratulations! You've successfully escaped the Wicked Forest";
-                setTimeout(function() { document.location.reload(true); },3000)               
+            if (section1.progress > 2) {
+                section1.challenges.challenge5.forward();               
                 return    
             } else { 
                 for (i = 0; i < tempProgress; i++) {
@@ -269,6 +291,7 @@ var section1 = {
 //sequence when ambushed
 var selectedName;
 function playerAttacked() {
+    forestChallengeMusic.pause();
     forestCombatMusic.play();
     document.getElementById("commandIcons").style.display = "none"; //remove commandIcon
     document.getElementById("forestPic").style.display = "none";
@@ -281,15 +304,16 @@ function playerAttacked() {
     } else if (selectChallenge === 2) {
         selectedName = section1.challenges.challenge2.selectedChallengeName;
         selectChallenge = 0;
+    } else if (selectChallenge === 5) {
+        selectedName = section1.challenges.challenge5.selectedChallengeName;
+        selectChallenge = 0;
     } else if (a === 1) {
         selectedName = section1.enemies.enemy1;
     } else if (a === 2) {
         selectedName = section1.enemies.enemy2;
     } else if (a === 3) {
         selectedName = section1.enemies.enemy3;
-    } else if (a === 4) {
-        selectedName = section1.enemies.enemy3;
-    }
+    } 
 
     document.getElementById(selectedName.picID).style.display = "inline";
     document.getElementById(selectedName.picID).style.animation = "attacked linear 1s";
@@ -392,7 +416,6 @@ function combatSequence() {
         var runChance = Math.floor((Math.random() * 2) + 0);
         if (runChance == true) {
             document.getElementById("dialog").innerHTML = "You escaped!!";
-            forestCombatMusic.play();
             forestCombatMusic.pause();
             document.getElementById(selectedName.picID).style.display = "none";
             document.getElementById("nextIcons").style.display = "inline-block";
