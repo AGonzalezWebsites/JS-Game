@@ -8,6 +8,11 @@ Things to Add:
 
 */
 
+function eraseText() {
+    document.getElementById("nameField").innerHTML = "";
+    console.log("ran")
+}
+
 (function() {
     document.getElementById("audio1").preload;
     document.getElementById("audio2").preload;
@@ -66,6 +71,7 @@ var forestFinalBattle = document.getElementById("audio7");
 //initializing game
 var changeName = function() {
     var name = document.getElementById("nameField").value;
+    document.getElementById("dialogBox").style.display = "flex";
     document.getElementById("playerName").innerHTML = name;
     document.getElementById("face").style.display = "inline-block";
     document.getElementById("playerSubmit").remove();
@@ -107,22 +113,38 @@ var section1 = {
                         forward: function() {
                             selectChallenge = 1;
                             this.selectedChallengeName = section1.enemies.enemy10;
+                            document.getElementById("commandIcons").style.display = "none";
                             document.getElementById("dialog").innerHTML = "The small creature beings charging you ready to attack!!"
-                            setTimeout(playerAttacked(), 5000);
+                            setTimeout(function(){playerAttacked()}, 5000);
                         },
                     },
         challenge2: {question: "You hear a slithering from behind you. A loud sound like a boulder dragging through the forest..",
                             forward: function() {
                             selectChallenge = 2;
                             this.selectedChallengeName = section1.enemies.enemy11;
+                            document.getElementById("commandIcons").style.display = "none";
                             document.getElementById("dialog").innerHTML = "You hear a loud hiss as fangs the size of ice picks speed towards you!!"
-                            setTimeout(playerAttacked(), 5000);
-        },
-    },
-        challenge3: {question: "You see a small group of stranded survivors. They have weapons.. you're not sure if you've been spotted..",
-                    solution: "run"},
-        challenge4: {question: "An elderly Lady spots you and waves you over, the coast seems to be clear of any monsters..",
-                    solution: "forward"},
+                            setTimeout(function(){playerAttacked()}, 5000);
+                            },
+                    },
+        challenge3: {question: "Whoa.. the ground is shaking and trees are dropping all around you.. earthquake?!",
+                            forward: function() {
+                            selectChallenge = 3;
+                            this.selectedChallengeName = section1.enemies.enemy12;
+                            document.getElementById("commandIcons").style.display = "none";
+                            document.getElementById("dialog").innerHTML = "A massive figure slowly appears in front of you while your surroundings get demolished.."
+                            setTimeout(function(){playerAttacked()}, 5000);
+                            },
+            },
+        challenge4: {question: "You tripped over what looks like a thick white rope, it clings on as you free your leg..",
+                            forward: function() {
+                            selectChallenge = 4;
+                            this.selectedChallengeName = section1.enemies.enemy13;
+                            document.getElementById("commandIcons").style.display = "none";
+                            document.getElementById("dialog").innerHTML = "You hear a loud hiss as fangs the size of ice picks speed towards you!!"
+                            setTimeout(function(){playerAttacked()}, 5000);
+                            },
+                    },
         challenge5: {question: "HP Fully Restored!!",
                     forward: function() {
                         forestChallengeMusic.pause();
@@ -163,7 +185,7 @@ var section1 = {
         document.getElementById("forestPic").style.display = "inline";
         document.getElementById("commandIcons").style.display = "block"; //add commandIcon
         forestChallengeMusic.play();
-            a = Math.floor((Math.random() * 2) + 1);
+            a = Math.floor((Math.random() * 4) + 1);
         if (a === 1) {
             selectedChallenge = section1.challenges.challenge1;
         } else if (a === 2) {
@@ -172,18 +194,6 @@ var section1 = {
             selectedChallenge = section1.challenges.challenge3;
         } else if (a === 4) {
             selectedChallenge = section1.challenges.challenge4;
-        } else if (a === 5) {
-            selectedChallenge = section1.challenges.challenge5;
-        } else if (a === 6) {
-            selectedChallenge = section1.challenges.challenge6;
-        } else if (a === 7) {
-            selectedChallenge = section1.challenges.challenge7;
-        } else if (a === 8) {
-            selectedChallenge = section1.challenges.challenge8;
-        } else if (a === 9) {
-            selectedChallenge = section1.challenges.challenge9;
-        } else if (a === 10) {
-            selectedChallenge = section1.challenges.challenge10;
         } 
         document.getElementById("dialog").innerHTML = selectedChallenge.question;
 
@@ -194,7 +204,7 @@ var section1 = {
         document.getElementById('run').onclick = function changeContent() {
             document.getElementById("commandIcons").style.display = "none"; //add commandIcon
             document.getElementById("dialog").innerHTML = "Challenge avoided.."
-            if (4 < Math.floor((Math.random() * 6) + 1)) {
+            if (6 < Math.floor((Math.random() * 6) + 1)) {
                 for (i = 0; i < tempProgress; i++) {
                     (function(i) {
                         setTimeout(function() {
@@ -225,11 +235,11 @@ var section1 = {
         if (selectedChallenge === selectedChallenge) {
             forestChallengeMusic.play();
             document.getElementById("nextIcons").style.display = "none";
-            document.getElementById("forestPic").style.display = "block";
-            tempProgress = Math.floor((Math.random() * 7) + 1);
+            document.getElementById("forestPic").style.display = "inline";
+            tempProgress = Math.floor((Math.random() * 9) + 1);
             document.getElementById("commandIcons").style.display = "none";
             document.getElementById("dialog").innerHTML = tempProgress + " progress made!" 
-            if (4 < Math.floor((Math.random() * 6) + 1)) {
+            if (8 <= Math.floor((Math.random() * 10) + 1)) {
                 for (i = 0; i < tempProgress; i++) {
                     (function(i) {
                         setTimeout(function() {
@@ -245,11 +255,12 @@ var section1 = {
                     }(i));
                 }
                 setTimeout(function() {document.getElementById("commandIcons").style.display = "none"; document.getElementById("dialog").innerHTML = "Watch out!"}, 3000)
-                setTimeout(function() {forestChallengeMusic.pause(); document.getElementById("forestPic").style.display = "none"; }, 5000)
+                setTimeout(function() {playerAttacked(); }, 5000)
+                return
               
             } else {
                 //random chance to get a challenge
-                if (3 < Math.floor((Math.random() * 6) + 1)) {
+                if (6 <= Math.floor((Math.random() * 10) + 1)) {
                     for (i = 0; i < tempProgress; i++) {
                         (function(i) {
                             setTimeout(function() {
@@ -313,7 +324,7 @@ function playerAttacked() {
     document.getElementById("commandIcons").style.display = "none"; //remove commandIcon
     document.getElementById("forestPic").style.display = "none";
     //document.getElementById("combatIcons").style.display = "block"; //add combatIcon
-    a = Math.floor((Math.random() * 5) + 1);
+    a = Math.floor((Math.random() * 4) + 1);
     
     if (selectChallenge === 1) {
         selectedName = section1.challenges.challenge1.selectedChallengeName;
@@ -321,8 +332,11 @@ function playerAttacked() {
     } else if (selectChallenge === 2) {
         selectedName = section1.challenges.challenge2.selectedChallengeName;
         selectChallenge = 0;
-    } else if (selectChallenge === 5) {
-        selectedName = section1.challenges.challenge5.selectedChallengeName;
+    } else if (selectChallenge === 3) {
+        selectedName = section1.challenges.challenge3.selectedChallengeName;
+        selectChallenge = 0;
+    } else if (selectChallenge === 4) {
+        selectedName = section1.challenges.challenge4.selectedChallengeName;
         selectChallenge = 0;
     } else if (a === 1) {
         selectedName = section1.enemies.enemy1;
@@ -330,6 +344,8 @@ function playerAttacked() {
         selectedName = section1.enemies.enemy2;
     } else if (a === 3) {
         selectedName = section1.enemies.enemy3;
+    } else if (a === 4) {
+        selectedName = section1.enemies.enemy4;
     } 
 
     document.getElementById(selectedName.picID).style.display = "inline";
@@ -451,7 +467,8 @@ function combatSequence() {
             section1.progress = section1.progress - 50;
             document.getElementById("progressInfo").style.width = section1.progress + '%';
             lastChallengeInitiated = false;
-            forestFinalBattle.pause();
+            forestFinalBattleIntro.pause();
+            document.getElementById(selectedName.picID).style.display = "none";
             document.getElementById("nextIcons").style.display = "inline-block";
         } else if (runChance == true) {
             document.getElementById("dialog").innerHTML = "You escaped!!";

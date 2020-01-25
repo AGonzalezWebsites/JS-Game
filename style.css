@@ -74,7 +74,7 @@ h1 {
     background: -webkit-linear-gradient(to top, #FFFFFF, #bbbbbb);
     background: -moz-linear-gradient(to top, #FFFFFF, #bbbbbb);
     background: linear-gradient(to top, rgb(214, 207, 197), #ffffff);
-    border: 1px solid black;
+    border: 3px dotted black;
     border-radius: 5px;
     z-index: 0;
     overflow: hidden;
@@ -82,6 +82,13 @@ h1 {
 
 #playArea {
   background: #FFFFFF;
+}
+
+#placeHolder {
+  display: inline;
+  opacity: .9;
+  filter: blur(1px);
+  filter: grayscale(60%);
 }
 
 .playArea > img {
@@ -105,13 +112,34 @@ h1 {
     text-align: center;
 }
 
-#playerSubmit > button {
-    height: 20px;
+#playerSubmit {
+    height: 40px;
     width: 60px;
     text-align: center;
     margin: auto;
     justify-content: center;
+    overflow: hidden;
+    
+  }
+
+#playerSubmit > input {
+          height: 100%;
+          width: 50%;
+          text-align: center;
+          margin: auto;
+          float: left;
+          font-size: 20px;
+      }
+
+#playerSubmit > button {
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    margin: auto;
+    float: right;
+    font-size: 20px;
 }
+
 
 #face {
     display: none;
@@ -191,7 +219,7 @@ h1 {
 }
 
 .dialogBox {
-    display: flex;
+    display: none;
     position: relative;
     background: rgba(245, 244, 243, 0.80);
     border: 1px solid black;
@@ -227,11 +255,11 @@ h1 {
 }
 
 .initialNextBox > i {
-  font-size: 50px;
-  height: 50px;
-  width: 50px;
+  font-size: 70px;
+  height: 70px;
+  width: 70px;
   padding: 10px;;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
   display: inline-block;
   color: black;
   
@@ -255,7 +283,7 @@ h1 {
     font-size: 50px;
     height: 50px;
     width: 50px;
-    padding: 10px;;
+    padding: 10px;
     margin-bottom: 20px;
     display: inline-block;
     color: black;
@@ -280,7 +308,7 @@ h1 {
   font-size: 50px;
   height: 50px;
   width: 50px;
-  padding: 10px;;
+  padding: 10px;
   margin-bottom: 20px;
   display: inline-block;
   color: black;
@@ -290,6 +318,22 @@ h1 {
 #nextLevelBox {
   display: none;
 }
+
+.commandBoxAlways {
+    display: inline-block;
+    position: absolute;
+    z-index: -1;
+    margin-left: auto;
+    margin-right: auto;
+    width: 399px;
+    height: 117px;
+    bottom: 0px;
+    text-align: center;
+    border: 3px dotted black;
+    background: rgb(77,75,110);
+    background: linear-gradient(90deg, rgba(77,75,110,1) 0%, rgba(62,62,62,1) 35%, rgba(58,82,87,1) 100%);
+    filter: grayscale(70%);
+  }
 
 .commandBox {
     display: block;
@@ -302,11 +346,11 @@ h1 {
 }
 
 .commandBox > i {
-    font-size: 50px;
-    height: 50px;
-    width: 50px;
-    padding: 10px;;
-    margin-bottom: 20px;
+    font-size: 70px;
+    height: 70px;
+    width: 70px;
+    padding: 10px;
+    margin-bottom: 15px;
     display: inline-block;
     color: black;
     
@@ -322,7 +366,8 @@ h1 {
     margin-left: auto;
     margin-right: auto;
     width: 399px;
-    bottom: 1px;
+    height: 117px;
+    bottom: 0px;
     text-align: center;
 }
 
@@ -330,11 +375,11 @@ h1 {
     font-size: 50px;
     height: 50px;
     width: 50px;
-    padding: 10px;;
-    margin-bottom: 20px;
+    padding: 20px;
+    margin: 10px;
     display: inline-block;
-    color: black;
-    
+    background: rgb(246,246,246);
+  background: radial-gradient(circle, rgba(246,246,246,1) 0%, rgba(199,199,199,1) 100%);
 }
 
 #combatIcons {

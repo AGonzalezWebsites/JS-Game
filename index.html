@@ -16,22 +16,23 @@
         <audio id="audio5" src="sounds/fightWon.mp3"></audio>
         <audio loop id="audio6" src="sounds/forestFinalBattleIntro.mp3"></audio>
         <audio loop id="audio7" src="sounds/forestFinalBattle.mp3"></audio>
-        <div id="playArea" class="playArea">
-            <img id=wolf class="elementAnimation" src="/img/wolf.jpg" alt="">
-            <img id=beetle class="elementAnimation" src="/img/beetle.jpg" alt="">
-            <img id=snake class="elementAnimation" src="/img/snake.jpg" alt="">
-            <img id=spiderSmall class="elementAnimation" src="/img/spiderSmall.jpg" alt="">
-            <img id=beaver class="elementAnimation" src="/img/beaver.jpg" alt="">
-            <img id=mushroom class="elementAnimation" src="/img/mushroom.jpg" alt="">
-            <img id=plant class="elementAnimation" src="/img/plant.jpg" alt="">
-            <img id=spiderQueen class="elementAnimation" src="/img/spiderQueen.jpg" alt="">
-            <img id=wizard class="elementAnimation" src="/img/wizard.jpg" alt="">
-            <img id=forestPic src="/img/forest.jpg" alt="">
-        <div class="topBox" id="player">
+        <div id="playArea" class="playArea">    
+            <img id="placeHolder" src="/img/cardPlaceholder.jpg" alt="">
+            <img id=wolf class="elementAnimation" src="/img/wolf.jpg" alt="" style="filter: grayscale(60%) blur(.7px);">
+            <img id=beetle class="elementAnimation" src="/img/beetle.jpg" alt="" style="filter: grayscale(70%) blur(.7px);">
+            <img id=snake class="elementAnimation" src="/img/snake.jpg" alt="" style="filter: grayscale(60%) blur(.7px);">
+            <img id=spiderSmall class="elementAnimation" src="/img/spiderSmall.jpg" alt="" style="filter: grayscale(50%) blur(.7px);">
+            <img id=beaver class="elementAnimation" src="/img/beaver.jpg" alt="" style="filter: grayscale(65%) blur(.7px);">
+            <img id=mushroom class="elementAnimation" src="/img/mushroom.jpg" alt="" style="filter: grayscale(60%) blur(.7px);">
+            <img id=plant class="elementAnimation" src="/img/plant.jpg" alt="" style="filter: grayscale(60%) blur(.7px);">
+            <img id=spiderQueen class="elementAnimation" src="/img/spiderQueen.jpg" alt="" style="filter: grayscale(70%) blur(.7px);">
+            <img id=wizard class="elementAnimation" src="/img/wizard.jpg" alt="" style="filter: grayscale(60%) blur(.7px);">
+            <img id=forestPic src="/img/forest.jpg" alt="" style="filter: grayscale(50%) blur(.7px);">
+            <div class="topBox" id="player">
             <i id="face" class="far fa-smile-beam"></i>
             <h1 id="playerName"></h1>
             <span id="playerSubmit">
-                <input type="text" id="nameField" value="Who's Playing?"><button onclick="changeName()">Submit</button>
+                <input type="text" id="nameField" value="Who's Playing?" onclick="eraseText();"><button onclick="changeName()">Submit</button>
             </span>
             <br>
             <span id="playerInfo">
@@ -58,10 +59,13 @@
         </div>
         
 
-        <div class="dialogBox">
+        <div class="dialogBox" id="dialogBox">
             <p id="dialog"></p>
         </div>
         
+        <div class="commandBoxAlways">
+        </div>
+
         <div class="initialNextBox" id="initialNextIcons">
             <i onclick="section1.firstChallenge();" id="upArrow" class="fas fa-arrow-up"></i>
         </div>
@@ -83,6 +87,7 @@
             <i id="attack" class="fas fa-hand-rock"></i>
             <i id="runAway" class="fas fa-running"></i>
         </div>
+
     </div>
     
 
