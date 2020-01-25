@@ -14,6 +14,8 @@ Things to Add:
     document.getElementById("audio3").preload;
     document.getElementById("audio4").preload;
     document.getElementById("audio5").preload;
+    document.getElementById("audio6").preload;
+    document.getElementById("audio7").preload;
 }());
 
 
@@ -59,6 +61,8 @@ var forestCombatMusic = document.getElementById("audio2");
 var enemyRoar = document.getElementById("audio3");
 var attackSound = document.getElementById("audio4");
 var fightWon = document.getElementById("audio5");
+var forestFinalBattleIntro = document.getElementById("audio6");
+var forestFinalBattle = document.getElementById("audio7");
 //initializing game
 var changeName = function() {
     var name = document.getElementById("nameField").value;
@@ -79,21 +83,22 @@ var changeName = function() {
 
 //world 1, which contains enemies and challenge properties as well as challenge and chack answer methods
 var a = 0;
+var lastChallengeInitiated = false;
 var tempProgress = 0;
 var selectChallenge = 0;
 var section1 = {
     location: "Enchanted Forest",
     progress: 0,
     enemies: {
-        enemy1: {name: 'Vengeful Wolf', level: 1, attack: 3, health: 5, expGiven: 10, picID: "wolf"},
+        enemy1: {name: 'Vengeful Wolf', level: 1, attack: 3, health: 5, expGiven: 13, picID: "wolf"},
         enemy2: {name: "Webbie", level: 1, attack: 1, health: 3, expGiven: 6, picID: "spiderSmall"},
-        enemy3: {name: "Beetler", level: 1, attack: 3, health: 7, expGiven: 12, picID: "beetle"},
+        enemy3: {name: "Beetler", level: 1, attack: 3, health: 7, expGiven: 15, picID: "beetle"},
         enemy4: {name: 'Knight Beaver', level: 1, attack: 2, health: 4, expGiven: 8, picID: "beaver"},
-        enemy10: {name: 'Hotmush', level: 1, attack: 9, health: 3, expGiven: 18, picID: "mushroom"},
-        enemy11: {name: 'King Serpentor', level: 2, attack: 11, health: 6, expGiven: 28, picID: "snake"},
-        enemy12: {name: "Colossal Rootra", level: 2, attack: 4, health: 10, expGiven: 20, picID: "plant"},
-        enemy13: {name: "Queen Webra", level: 2, attack: 9, health: 8, expGiven: 26, picID: "spiderQueen"},
-        enemy14: {name: "Gate Keeper", level: "???", attack: 31, health: 22, expGiven: 112, picID: "wizard"},
+        enemy10: {name: 'Hotmush', level: 1, attack: 9, health: 3, expGiven: 22, picID: "mushroom"},
+        enemy11: {name: 'King Serpentor', level: 2, attack: 11, health: 6, expGiven: 36, picID: "snake"},
+        enemy12: {name: "Colossal Rootra", level: 2, attack: 4, health: 10, expGiven: 24, picID: "plant"},
+        enemy13: {name: "Queen Webra", level: 2, attack: 9, health: 8, expGiven: 39, picID: "spiderQueen"},
+        enemy14: {name: "Gate Keeper", level: "???", attack: 31, health: 54, expGiven: 212, picID: "wizard"},
     },
     firstChallenge: function() {forestChallengeMusic.play(); selectedChallenge = section1.challenges.challenge1; document.getElementById("initialNextIcons").style.display = "none"; section1.checkAnswer(); },
     challenges: {
@@ -118,25 +123,32 @@ var section1 = {
                     solution: "run"},
         challenge4: {question: "An elderly Lady spots you and waves you over, the coast seems to be clear of any monsters..",
                     solution: "forward"},
-        challenge5: {question: "Finally.. you've reached the exit.. but..",
+        challenge5: {question: "HP Fully Restored!!",
                     forward: function() {
+                        forestChallengeMusic.pause();
+                        forestFinalBattleIntro.play();
+                        lastChallengeInitiated = true;
+                        player.health = player.baseHealth;
+                        document.getElementById("healthInfo").innerHTML = player.health;
                         selectChallenge = 5;
                         this.selectedChallengeName = section1.enemies.enemy14;
                         document.getElementById("commandIcons").style.display = "none";
-                        document.getElementById("dialog").innerHTML = "";
+                        document.getElementById("dialog").innerHTML = "HP Fully Restored!!";
                         setTimeout(function(){document.getElementById("dialog").innerHTML = "you see a figure slowly approaching from the other side.."}, 2000);
-                        setTimeout(function(){document.getElementById("dialog").innerHTML = "Unknown: 'You think you can leave this place? Without a true challenge?!...'"}, 10000);
-                        setTimeout(function(){document.getElementById("dialog").innerHTML = "Unknown: 'step forward and show me when you're made of...'"}, 17000);
-                        setTimeout(function(){document.getElementById("dialog").innerHTML = "Make sure you're truly ready. There is no going back if you decide to proceed."}, 24000);
+                        setTimeout(function(){document.getElementById("dialog").innerHTML = "Unknown: 'You think you can leave this place? Without a true challenge?!...'"}, 8000);
+                        setTimeout(function(){document.getElementById("dialog").innerHTML = "Unknown: 'step forward and show me when you're made of...'"}, 15000);
+                        setTimeout(function(){document.getElementById("dialog").innerHTML = "Make sure you're truly ready before proceeding..."}, 22000);
                         setTimeout(function(){
                                 document.getElementById("commandIcons").style.display = "inline-block";
                                 document.getElementById('forward').onclick = function changeContent() {playerAttacked();}
                                 document.getElementById('run').onclick = function changeContent() {
+                                    document.getElementById("commandIcons").style.display = "inline-block";
                                     document.getElementById("dialog").innerHTML = "Come back when you're a real challenge, child.";
                                     setTimeout(function(){document.getElementById("dialog").innerHTML = "Progress reduced to 50";}, 4000);
                                     setTimeout(function(){
-                                        atPercentage = section1.progress - 50;
-                                        document.getElementById("progressInfo").style.width = atPercentage + '%';
+                                        forestFinalBattleIntro.pause();
+                                        section1.progress = section1.progress - 50;
+                                        document.getElementById("progressInfo").style.width = section1.progress + '%';
                                         section1.checkAnswer();
                                         }, 8000);
                                 };
@@ -291,8 +303,12 @@ var section1 = {
 //sequence when ambushed
 var selectedName;
 function playerAttacked() {
+    if (lastChallengeInitiated === true) {
+        forestChallengeMusic.pause();
+    } else {
     forestChallengeMusic.pause();
     forestCombatMusic.play();
+    }
     document.getElementById("commandIcons").style.display = "none"; //remove commandIcon
     document.getElementById("forestPic").style.display = "none";
     //document.getElementById("combatIcons").style.display = "block"; //add combatIcon
@@ -363,7 +379,6 @@ function combatSequence() {
             
         //Determines if player is still alive. Game ends if not.
         if (section1.enemies.tempEnemyHealth >= 1 && player.health >= 1) {
-
             document.getElementById("dialog").innerHTML = "You dealt " + player.strength + " damage to " + selectedName.name; 
             document.getElementById("healthInfo").innerHTML = player.health;
             setTimeout(function() { document.getElementById("dialog").innerHTML = "You received " + selectedName.attack + " damage"; }, 3000)
@@ -381,6 +396,7 @@ function combatSequence() {
             document.getElementById("healthInfo").innerHTML = player.health;
             fightWon.play();
             forestCombatMusic.pause();
+            forestFinalBattleIntro.pause();
             setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Dealt: " + overallDamageGiven; }, 3000)
             setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Received: " + overallDamageTaken; }, 6000)
             setTimeout(function() {
@@ -400,12 +416,25 @@ function combatSequence() {
                 }
             }, 9000)
             setTimeout(function() {
+
+                if (lastChallengeInitiated === true) {
+                    forestFinalBattleIntro.pause();
+                    document.getElementById("dialog").innerHTML = "Unfamiliar Voice: " + '"You.. you are the first to ever defeat the forest gatekeeper"'; 
+                    setTimeout(function() {
+                        document.getElementById("dialog").innerHTML = "Unfamiliar Voice: " + '"Proceed to the next location. People are in need.."';
+                    }, 4000)
+                    setTimeout(function() {
+                        document.getElementById("dialog").innerHTML = "Unfamiliar Voice: " + 'Proceed...';
+                        document.getElementById("nextLevelIcons").style.display = "inline-block";
+                    }, 8000)
+                } else {
                 sequences = 0;
                 overallDamageGiven = 0;
                 overallDamageTaken = 0;
                 document.getElementById("commandIcons").style.display = "none";
                 document.getElementById(selectedName.picID).style.display = "none";
                 document.getElementById("nextIcons").style.display = "inline-block";
+                }
             }, 12000)
         }
     };
@@ -414,12 +443,21 @@ function combatSequence() {
     document.getElementById("runAway").onclick = function () {
         document.getElementById("combatIcons").style.display = "none";
         var runChance = Math.floor((Math.random() * 2) + 0);
-        if (runChance == true) {
+        
+        if (lastChallengeInitiated === true) {
+            forestCombatMusic.pause();
+            document.getElementById("dialog").innerHTML = "You escaped!!, progress reduced to 50%..";
+            section1.progress = section1.progress - 50;
+            document.getElementById("progressInfo").style.width = section1.progress + '%';
+            lastChallengeInitiated = false;
+            forestFinalBattle.pause();
+            document.getElementById("nextIcons").style.display = "inline-block";
+        } else if (runChance == true) {
             document.getElementById("dialog").innerHTML = "You escaped!!";
             forestCombatMusic.pause();
             document.getElementById(selectedName.picID).style.display = "none";
             document.getElementById("nextIcons").style.display = "inline-block";
-        } else { 
+        }  else { 
             document.getElementById("dialog").innerHTML = "You could not escape! <br>" + selectedName.attack + " damage taken";
             player.health = player.health - selectedName.attack;
             document.getElementById("healthInfo").innerHTML = player.health;

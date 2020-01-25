@@ -10,21 +10,23 @@
 </head>
 <body id="backGround">
         <audio loop id="audio1" src="sounds/forestChallengeMusic.mp3"></audio>
-        <audio loop id="audio2" src="sounds/forestBattle.mp3"></audio>
+        <audio loop id="audio2" src="sounds/forestFinalBattle.mp3"></audio>
         <audio id="audio3" src="sounds/enemyRoar.mp3"></audio>
         <audio id="audio4" src="sounds/attack.mp3"></audio>
         <audio id="audio5" src="sounds/fightWon.mp3"></audio>
-    <div class="playArea">
-        <img id=wolf class="elementAnimation" src="/img/wolf.jpg" alt="">
-        <img id=beetle class="elementAnimation" src="/img/beetle.jpg" alt="">
-        <img id=snake class="elementAnimation" src="/img/snake.jpg" alt="">
-        <img id=spiderSmall class="elementAnimation" src="/img/spiderSmall.jpg" alt="">
-        <img id=beaver class="elementAnimation" src="/img/beaver.jpg" alt="">
-        <img id=mushroom class="elementAnimation" src="/img/mushroom.jpg" alt="">
-        <img id=plant class="elementAnimation" src="/img/plant.jpg" alt="">
-        <img id=spiderQueen class="elementAnimation" src="/img/spiderQueen.jpg" alt="">
-        <img id=wizard class="elementAnimation" src="/img/wizard.jpg" alt="">
-        <img id=forestPic src="/img/forest.jpg" alt="">
+        <audio loop id="audio6" src="sounds/forestFinalBattleIntro.mp3"></audio>
+        <audio loop id="audio7" src="sounds/forestFinalBattle.mp3"></audio>
+        <div id="playArea" class="playArea">
+            <img id=wolf class="elementAnimation" src="/img/wolf.jpg" alt="">
+            <img id=beetle class="elementAnimation" src="/img/beetle.jpg" alt="">
+            <img id=snake class="elementAnimation" src="/img/snake.jpg" alt="">
+            <img id=spiderSmall class="elementAnimation" src="/img/spiderSmall.jpg" alt="">
+            <img id=beaver class="elementAnimation" src="/img/beaver.jpg" alt="">
+            <img id=mushroom class="elementAnimation" src="/img/mushroom.jpg" alt="">
+            <img id=plant class="elementAnimation" src="/img/plant.jpg" alt="">
+            <img id=spiderQueen class="elementAnimation" src="/img/spiderQueen.jpg" alt="">
+            <img id=wizard class="elementAnimation" src="/img/wizard.jpg" alt="">
+            <img id=forestPic src="/img/forest.jpg" alt="">
         <div class="topBox" id="player">
             <i id="face" class="far fa-smile-beam"></i>
             <h1 id="playerName"></h1>
@@ -66,6 +68,10 @@
 
         <div class="nextBox" id="nextIcons">
             <i onclick="section1.checkAnswer();" id="upArrow" class="fas fa-arrow-up"></i>
+        </div>
+
+        <div class="nextLevelBox" id="nextLevelIcons">
+            <i onclick="" id="upArrow" class="fas fa-arrow-up"></i>
         </div>
 
         <div class="commandBox" id="commandIcons">

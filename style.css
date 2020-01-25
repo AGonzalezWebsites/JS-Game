@@ -71,7 +71,6 @@ h1 {
     top: 10%;
     height: 500px;
     width: 400px;
-    background: #FFFFFF;
     background: -webkit-linear-gradient(to top, #FFFFFF, #bbbbbb);
     background: -moz-linear-gradient(to top, #FFFFFF, #bbbbbb);
     background: linear-gradient(to top, rgb(214, 207, 197), #ffffff);
@@ -79,6 +78,10 @@ h1 {
     border-radius: 5px;
     z-index: 0;
     overflow: hidden;
+}
+
+#playArea {
+  background: #FFFFFF;
 }
 
 .playArea > img {
@@ -109,11 +112,6 @@ h1 {
     margin: auto;
     justify-content: center;
 }
-
-
-
-
-
 
 #face {
     display: none;
@@ -266,6 +264,31 @@ h1 {
 
 #nextIcons {
     display: none;
+}
+
+.nextLevelBox {
+  display: none;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  width: 399px;
+  bottom: 1px;
+  text-align: center;
+}
+
+.nextLevelBox > i {
+  font-size: 50px;
+  height: 50px;
+  width: 50px;
+  padding: 10px;;
+  margin-bottom: 20px;
+  display: inline-block;
+  color: black;
+  
+}
+
+#nextLevelBox {
+  display: none;
 }
 
 .commandBox {
