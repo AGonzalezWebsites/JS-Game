@@ -271,7 +271,7 @@ var section1 = {
                 
 
             }
-            if (section1.progress > 2) {
+            if (section1.progress > 99) {
                 section1.challenges.challenge5.forward();               
                 return    
             } else { 
