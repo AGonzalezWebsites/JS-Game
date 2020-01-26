@@ -109,6 +109,7 @@ h1 {
   z-index: 1;
   opacity: 0;
   transition: 1s;
+  filter: grayscale(70%);
 }
 
 #inventoryAnimateIn {
@@ -134,6 +135,8 @@ h1 {
 }
 
 #inventoryToggleButton {
+  background: rgba(255, 255, 255, 0);
+  border: 0;
   font-size: 70px;
   height: 70px;
   width: 70px;
@@ -150,11 +153,11 @@ h1 {
   width: 80%;
   margin: 15% 6% 15% 13%;
   z-index: 4;
-  
+  filter: grayscale(50%);
 }
 
 #inventoryItems td, #inventoryItems th {
-  border: 1px solid #ddd;
+  border: 1px solid black;
   height: 75px;
   width: 100px;
   padding-top: 12px;
@@ -164,20 +167,17 @@ h1 {
 
 #inventoryItems tr:nth-child(even){background-color: #f2f2f260;}
 
-#inventoryItems i:hover {background-color: #ddd;}
-
 #inventoryItems th {
   text-align: center;
   background-color: rgb(116, 108, 73);
-  color: white;
 }
 
 #inventoryItems i {
-    height: 40px;
-    width: 40px;
-    padding: 3px;
+    height: 50px;
+    width: 50px;
+    padding-top: 7px;
     font-size: 40px;
-    background: rgba(255, 255, 255, 0.185);
+    background: rgba(0, 0, 0, 0);
     display: inline-block;
     color: black;
     border: 0px solid black;
@@ -185,22 +185,10 @@ h1 {
 
 /* Inventory Icons Inventory Icons Inventory Icons Inventory Icons Inventory Icons*/
 
-#doubleStrike {
-  position: absolute;
-  left: 70px;
-  top: 140px;
-}
-
-#doubleStrikeOffset {
-  display: inline;
-  position: absolute;
-  background: rgba(255, 255, 255, 0.363) !important;
-  left: 80px;
-  top: 155px;
-  z-index: 1;
-}
-
 #heal {
+}
+
+#berzerk {
   display: none !important;
 }
 

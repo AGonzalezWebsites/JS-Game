@@ -1,17 +1,15 @@
 /*
-Things to Add:
-1) Add unique challenges
+Things to Add/Do:
+1) Add unique and maybe more complex challenges
 2) When a challenge is completed (not when avoided), delete that specific challenge property
 2) Additional Moves after leveling up
-3) Large top-down terrain background that moves down with progression
+3) Some kind of visual/animation for progression other than just the bar
 4) Final boss when progress is 100& (if you back out, progress reduced to 70%)
+
+BUGS: When you opt out of fighting the final boss, he begins showing up in the forest instead of other enemies
 
 */
 
-function eraseText() {
-    document.getElementById("nameField").innerHTML = "";
-    console.log("ran")
-}
 
 (function() {
     document.getElementById("audio1").preload;
@@ -25,7 +23,6 @@ function eraseText() {
 
 
 function Person(firstname, lastname, health, strength) {
-
     console.log(this)
     this.firstname = firstname;
     this.lastname = lastname;
@@ -35,31 +32,11 @@ function Person(firstname, lastname, health, strength) {
     this.strength = strength;
     this.progress = 0;
     this.attackPoints = 0;
-
-    this.checkLevelProgress = function (){
-        if (player.progress >= 100) {
-            player.level = player.level + 1;
-            player.baseHealth = player.baseHealth + 20;
-            player.health = player.baseHealth;
-            player.strength = player.strength + 2;
-            document.getElementById("levelInfo").innerHTML = player.level;
-            document.getElementById("healthInfo").innerHTML = player.health;
-            document.getElementById("strengthInfo").innerHTML = player.strength;
-            document.getElementById("dialog").innerHTML = "Congratulations, you've leveled up to " + player.level + "!!"
-            setTimeout(function() { 
-                document.getElementById("dialog").innerHTML = "Your health has increased to " + player.health + "!!"
-            }, 3000);
-            setTimeout(function() {
-                document.getElementById("dialog").innerHTML = "Your Strength has increased to " + player.strength + "!!"
-            }, 7000);
-            setTimeout(function() {
-                section1.challenge();
-            }, 10000);
-        } else {
-            section1.challenge();
-        }
+    this.abilities = {
+        Heal: { name: "Heal", amount: 30, attackPoints: 18}, 
+        berzerk: { name: "Berzerk", strength: 9, attackPoints: 15}, 
+        meteor: { name: "meteor", strength: 31, attackPoints: 31}, 
     }
-
 }
 
 player = new Person('Alex', 'Doe', "100", "2");
@@ -92,12 +69,10 @@ var changeName = function() {
 
 function inventoryToggleIn() {
     document.getElementById("inventoryAnimateIn").style.display = "inline-block";
-    console.log("toggle in")
 }
 
 function inventoryToggleOut() {
-    document.getElementById("inventoryAnimateIn").style.display = "none";;
-    console.log("toggle out")
+    document.getElementById("inventoryAnimateIn").style.display = "none";
 }
 
 //world 1, which contains enemies and challenge properties as well as challenge and chack answer methods
@@ -119,7 +94,7 @@ var section1 = {
         enemy13: {name: "Queen Webra", level: 2, attack: 9, health: 8, expGiven: 39, picID: "spiderQueen"},
         enemy14: {name: "Gate Keeper", level: "???", attack: 31, health: 54, expGiven: 212, picID: "wizard"},
     },
-    firstChallenge: function() {forestChallengeMusic.play(); selectedChallenge = section1.challenges.challenge1; document.getElementById("initialNextIcons").style.display = "none"; section1.checkAnswer(); },
+    firstChallenge: function() {forestChallengeMusic.play(); selectedChallenge = section1.challenges.challenge1; document.getElementById("initialNextIcons").style.display = "none"; section1.progressionCheck(); },
     challenges: {
         
         challenge1: {question: "A small creature spots you, but seems more intrigued than anything..",
@@ -148,7 +123,7 @@ var section1 = {
                             document.getElementById("dialog").innerHTML = "A massive figure slowly appears in front of you while your surroundings get demolished.."
                             setTimeout(function(){playerAttacked()}, 5000);
                             },
-            },
+                    },
         challenge4: {question: "You tripped over what looks like a thick white rope, it clings on as you free your leg..",
                             forward: function() {
                             selectChallenge = 4;
@@ -162,7 +137,6 @@ var section1 = {
                     forward: function() {
                         forestChallengeMusic.pause();
                         forestFinalBattleIntro.play();
-                        lastChallengeInitiated = true;
                         player.health = player.baseHealth;
                         document.getElementById("healthInfo").innerHTML = player.health;
                         selectChallenge = 5;
@@ -177,15 +151,18 @@ var section1 = {
                                 document.getElementById("commandIcons").style.display = "inline-block";
                                 document.getElementById('forward').onclick = function changeContent() {playerAttacked();}
                                 document.getElementById('run').onclick = function changeContent() {
-                                    document.getElementById("commandIcons").style.display = "inline-block";
-                                    document.getElementById("dialog").innerHTML = "Come back when you're a real challenge, child.";
-                                    setTimeout(function(){document.getElementById("dialog").innerHTML = "Progress reduced to 50";}, 4000);
-                                    setTimeout(function(){
-                                        forestFinalBattleIntro.pause();
-                                        section1.progress = section1.progress - 50;
-                                        document.getElementById("progressInfo").style.width = section1.progress + '%';
-                                        section1.checkAnswer();
-                                        }, 8000);
+                                document.getElementById("combatIcons").style.display = "none";
+                                document.getElementById("commandIcons").style.display = "none";
+                                document.getElementById("dialog").innerHTML = "Come back when you're a real challenge, child.";
+                                setTimeout(function(){document.getElementById("dialog").innerHTML = "Progress reduced to 50";}, 4000);
+                                setTimeout(function(){
+                                    forestFinalBattleIntro.pause();
+                                    section1.progress = 50;
+                                    document.getElementById("progressInfo").style.width = section1.progress + '%';
+                                    lastChallengeInitiated = false;
+                                    selectedName = 0;
+                                    document.getElementById("nextIcons").style.display = "inline-block";
+                                    }, 8000);
                                 };
                             }, 22000);
                         }
@@ -225,10 +202,6 @@ var section1 = {
                             section1.progress = atPercentage
                             document.getElementById("progressInfo").style.width = atPercentage + '%'; 
                             document.getElementById("commandIcons").style.display = "none";
-                            console.log(i);
-                            console.log(document.getElementById("progressInfo").style.width);
-                            console.log(section1.progress);
-                            console.log("-------------");
                         }, 300 * i);
                     }(i));
                 }
@@ -237,22 +210,25 @@ var section1 = {
                 return
             }
                 else {
-                section1.checkAnswer()
+                section1.progressionCheck()
                 }
         }
 
     },
-
-    //checks if 
-    checkAnswer: function() {
-        if (selectedChallenge === selectedChallenge) {
+    //Change to get a challenge or get attacked while making progress
+    progressionCheck: function() {
             forestChallengeMusic.play();
             document.getElementById("nextIcons").style.display = "none";
             document.getElementById("forestPic").style.display = "inline";
             tempProgress = Math.floor((Math.random() * 9) + 1);
             document.getElementById("commandIcons").style.display = "none";
             document.getElementById("dialog").innerHTML = tempProgress + " progress made!" 
-            if (8 <= Math.floor((Math.random() * 10) + 1)) {
+            
+            if (section1.progress > 99) {
+                section1.progress = 80; 
+                section1.challenges.challenge5.forward();              
+                return    
+            } else if (8 <= Math.floor((Math.random() * 10) + 1)) {
                 for (i = 0; i < tempProgress; i++) {
                     (function(i) {
                         setTimeout(function() {
@@ -260,20 +236,13 @@ var section1 = {
                             section1.progress = atPercentage
                             document.getElementById("progressInfo").style.width = atPercentage + '%'; 
                             document.getElementById("commandIcons").style.display = "none";
-                            console.log(i);
-                            console.log(document.getElementById("progressInfo").style.width);
-                            console.log(section1.progress);
-                            console.log("-------------");
                         }, 300 * i);
                     }(i));
                 }
                 setTimeout(function() {document.getElementById("commandIcons").style.display = "none"; document.getElementById("dialog").innerHTML = "Watch out!"}, 3000)
                 setTimeout(function() {playerAttacked(); }, 5000)
                 return
-              
-            } else {
-                //random chance to get a challenge
-                if (6 <= Math.floor((Math.random() * 10) + 1)) {
+            } else if (6 <= Math.floor((Math.random() * 10) + 1)) {
                     for (i = 0; i < tempProgress; i++) {
                         (function(i) {
                             setTimeout(function() {
@@ -281,23 +250,11 @@ var section1 = {
                                 section1.progress = atPercentage
                                 document.getElementById("progressInfo").style.width = atPercentage + '%'; 
                                 document.getElementById("commandIcons").style.display = "none";
-                                console.log(i);
-                                console.log(document.getElementById("progressInfo").style.width);
-                                console.log(section1.progress);
-                                console.log("-------------");
                             }, 300 * i);
                         }(i));
                     }
                     setTimeout(function() {section1.challenge();}, 3000)
                     return
-                } 
-            
-                
-
-            }
-            if (section1.progress > 99) {
-                section1.challenges.challenge5.forward();               
-                return    
             } else { 
                 document.getElementById("forestPic").style.display = "block";
                 for (i = 0; i < tempProgress; i++) {
@@ -307,30 +264,70 @@ var section1 = {
                             section1.progress = atPercentage
                             document.getElementById("progressInfo").style.width = atPercentage + '%'; 
                             document.getElementById("commandIcons").style.display = "none";
-                            console.log(i);
-                            console.log(document.getElementById("progressInfo").style.width);
-                            console.log(section1.progress);
-                            console.log("-------------");
                         }, 300 * i);
                     }(i));
-                }
+                } 
                 setTimeout(function() {tempProgress = 0; document.getElementById("commandIcons").style.display = "none"; document.getElementById("nextIcons").style.display = "inline-block"; document.getElementById("dialog").innerHTML = "No encounters..."; },3000)
-            }
-        } else { 
-            document.getElementById("dialog").innerHTML = "Uh oh..."
-            document.getElementById("commandIcons").style.display = "none";
-            setTimeout(function() { forestChallengeMusic.pause(); document.getElementById("forestPic").style.display = "none"; playerAttacked(); },3000)
-        }
+            }   
     }
 };
 
 
+//Beginning of checks before starting sequence
+//Beginning of checks before starting sequence
+//Beginning of checks before starting sequence
+//Beginning of checks before starting sequence
+
+function checkLevelProgress (){ // checks player Level - invoked by "nextIcons" onclick
+    if (player.progress >= 100) {
+        document.getElementById("commandIcons").style.display = "none";
+        document.getElementById("nextIcons").style.display = "none";
+        player.progress = 0;
+        document.getElementById("playerProgressInfo").style.width = player.progress + '%';
+        player.level = player.level + 1;
+        player.baseHealth = player.baseHealth + 20;
+        player.health = player.baseHealth;
+        player.strength = player.strength + 2;
+        document.getElementById("levelInfo").innerHTML = player.level;
+        document.getElementById("healthInfo").innerHTML = player.health;
+        document.getElementById("strengthInfo").innerHTML = player.strength;
+        document.getElementById("dialog").innerHTML = "Congratulations, you've leveled up to " + player.level + "!!"
+        setTimeout(function() { 
+            document.getElementById("dialog").innerHTML = "Your health has increased to " + player.health + "!!"
+        }, 3000);
+        setTimeout(function() {
+            document.getElementById("dialog").innerHTML = "Your Strength has increased to " + player.strength + "!!"
+        }, 7000);
+        setTimeout(function() {
+            checkfinalBoss();
+        }, 10000);
+    } else {
+        checkfinalBoss();
+    }
+}
+
+
+function checkfinalBoss(){ //Checks if defeated final boss - invoked after checkLevelProgress (above)
+    if (section1.enemies.enemy14.health <= 0) {
+        forestFinalBattleIntro.pause();
+        document.getElementById("dialog").innerHTML = "Unfamiliar Voice: " + '"You.. you are the first to ever defeat the forest gatekeeper"'; 
+        setTimeout(function() {
+            document.getElementById("dialog").innerHTML = "Unfamiliar Voice: " + '"Proceed to the next location. People are in need.."';
+        }, 4000)
+        setTimeout(function() {
+            document.getElementById("dialog").innerHTML = "Unfamiliar Voice: " + 'Proceed...';
+            document.getElementById("nextLevelIcons").style.display = "inline-block";
+        }, 8000)
+    } else {selectedName = 0; section1.progressionCheck();}
+};
+
 //sequence when ambushed
 var selectedName;
 function playerAttacked() {
-    if (lastChallengeInitiated === true) {
+    if (selectedName === section1.enemies.enemy14) {
         forestChallengeMusic.pause();
     } else {
+    forestFinalBattleIntro.pause();
     forestChallengeMusic.pause();
     forestCombatMusic.play();
     }
@@ -406,9 +403,7 @@ function combatSequence() {
     player.health = player.health - selectedName.attack;
     overallDamageGiven = overallDamageGiven + player.strength;
     overallDamageTaken = overallDamageTaken + selectedName.attack;              
-    console.log(selectedName)
     sequences = sequences + 1;
-    console.log(sequences);
             
         //Determines if player is still alive. Game ends if not.
         if (section1.enemies.tempEnemyHealth >= 1 && player.health >= 1) {
@@ -440,55 +435,30 @@ function combatSequence() {
                             let atPercentage = player.progress + 1;
                             player.progress = atPercentage
                             document.getElementById("playerProgressInfo").style.width = atPercentage + '%'; 
-                            console.log(i);
-                            console.log(document.getElementById("progressInfo").style.width);
-                            console.log(player.progress);
-                            console.log("-------------");
                         }, 100 * i);
                     }(i));
                 }
             }, 9000)
             setTimeout(function() {
-
-                if (lastChallengeInitiated === true) {
-                    forestFinalBattleIntro.pause();
-                    document.getElementById("dialog").innerHTML = "Unfamiliar Voice: " + '"You.. you are the first to ever defeat the forest gatekeeper"'; 
-                    setTimeout(function() {
-                        document.getElementById("dialog").innerHTML = "Unfamiliar Voice: " + '"Proceed to the next location. People are in need.."';
-                    }, 4000)
-                    setTimeout(function() {
-                        document.getElementById("dialog").innerHTML = "Unfamiliar Voice: " + 'Proceed...';
-                        document.getElementById("nextLevelIcons").style.display = "inline-block";
-                    }, 8000)
-                } else {
                 sequences = 0;
                 overallDamageGiven = 0;
                 overallDamageTaken = 0;
                 document.getElementById("commandIcons").style.display = "none";
                 document.getElementById(selectedName.picID).style.display = "none";
                 document.getElementById("nextIcons").style.display = "inline-block";
-                }
-            }, 12000)
+                }, 12000)
         }
     };
 
     //Attempts to run away. 50/50 chance.
     document.getElementById("runAway").onclick = function () {
         document.getElementById("combatIcons").style.display = "none";
-        var runChance = Math.floor((Math.random() * 2) + 0);
+        var runChance = Math.floor((Math.random() * 2) + 1);
         
-        if (lastChallengeInitiated === true) {
-            forestCombatMusic.pause();
-            document.getElementById("dialog").innerHTML = "You escaped!!, progress reduced to 50%..";
-            section1.progress = section1.progress - 50;
-            document.getElementById("progressInfo").style.width = section1.progress + '%';
-            lastChallengeInitiated = false;
-            forestFinalBattleIntro.pause();
-            document.getElementById(selectedName.picID).style.display = "none";
-            document.getElementById("nextIcons").style.display = "inline-block";
-        } else if (runChance == true) {
+        if (runChance == 1) {
             document.getElementById("dialog").innerHTML = "You escaped!!";
             lastChallengeInitiated = false;
+            forestCombatMusic.pause();
             forestCombatMusic.pause();
             document.getElementById(selectedName.picID).style.display = "none";
             document.getElementById("nextIcons").style.display = "inline-block";
@@ -502,23 +472,3 @@ function combatSequence() {
     };
     
 };
-
-
-
-
-
-
-
-
-/*Person.prototype.attack = function() {
-    return "Attack Something";
-}
-
-Person.prototype.getFormalFullName = function() {
-    return this.lastname + ', ' + this.firstname;
-}*/
-
-
-
-
-
