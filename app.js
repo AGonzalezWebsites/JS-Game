@@ -326,7 +326,7 @@ var selectedName;
 function playerAttacked() {
     if (selectedName === section1.enemies.enemy14) {
         forestChallengeMusic.pause();
-    } else {
+    } else if (selectedName !== section1.enemies.enemy14){
     forestFinalBattleIntro.pause();
     forestChallengeMusic.pause();
     forestCombatMusic.play();
