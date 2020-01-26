@@ -34,6 +34,8 @@ function Person(firstname, lastname, health, strength) {
     this.baseHealth = health;
     this.strength = strength;
     this.progress = 0;
+    this.attackPoints = 0;
+
     this.checkLevelProgress = function (){
         if (player.progress >= 100) {
             player.level = player.level + 1;
@@ -68,6 +70,7 @@ var attackSound = document.getElementById("audio4");
 var fightWon = document.getElementById("audio5");
 var forestFinalBattleIntro = document.getElementById("audio6");
 var forestFinalBattle = document.getElementById("audio7");
+
 //initializing game
 var changeName = function() {
     var name = document.getElementById("nameField").value;
@@ -86,6 +89,16 @@ var changeName = function() {
     document.getElementById("dialog").innerHTML = "Welcome," + ' ' + name + 
     "! Progress through the " + section1.location + " and overcome challenges to escape..";
 };
+
+function inventoryToggleIn() {
+    document.getElementById("inventoryAnimateIn").style.display = "inline-block";
+    console.log("toggle in")
+}
+
+function inventoryToggleOut() {
+    document.getElementById("inventoryAnimateIn").style.display = "none";;
+    console.log("toggle out")
+}
 
 //world 1, which contains enemies and challenge properties as well as challenge and chack answer methods
 var a = 0;
@@ -338,7 +351,10 @@ function playerAttacked() {
     } else if (selectChallenge === 4) {
         selectedName = section1.challenges.challenge4.selectedChallengeName;
         selectChallenge = 0;
-    } else if (a === 1) {
+    } else if (selectChallenge === 5) {
+        selectedName = section1.challenges.challenge5.selectedChallengeName;
+        selectChallenge = 5;
+    }  else if (a === 1) {
         selectedName = section1.enemies.enemy1;
     } else if (a === 2) {
         selectedName = section1.enemies.enemy2;
@@ -472,6 +488,7 @@ function combatSequence() {
             document.getElementById("nextIcons").style.display = "inline-block";
         } else if (runChance == true) {
             document.getElementById("dialog").innerHTML = "You escaped!!";
+            lastChallengeInitiated = false;
             forestCombatMusic.pause();
             document.getElementById(selectedName.picID).style.display = "none";
             document.getElementById("nextIcons").style.display = "inline-block";

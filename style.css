@@ -18,9 +18,6 @@ body {
     background: rgb(31, 30, 25);
 }
 
-
-
-
 i.fas,
 i.fab,
 i.far {
@@ -35,6 +32,7 @@ i.fas:hover,
 i.fab:hover,
 i.far:hover {
     background: silver;
+    cursor: crosshair;
 }
 
 .fa-smile-beam {
@@ -101,6 +99,121 @@ h1 {
     border-bottom: 2px inset black;
     z-index: -1;
 }
+
+.inventoryContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: white;
+  margin-left: 100%;
+  z-index: 1;
+  opacity: 0;
+  transition: 1s;
+}
+
+#inventoryAnimateIn {
+  animation: inventoryAnimation .1s linear;
+  display: none;
+  margin-left: 0% !important;
+  background: rgb(150, 98, 50);
+  transition: 1s;
+  opacity: 1 !important;
+}
+
+.inventoryContainer > i {
+  position: absolute;
+
+}
+
+#inventoryBackground {
+  display: inline-block;
+  position: absolute;
+  width: 110%;
+  height: 100%;
+  z-index: -1;
+}
+
+#inventoryToggleButton {
+  font-size: 70px;
+  height: 70px;
+  width: 70px;
+  padding: 10px;
+  margin-bottom: 15px;
+  bottom: 0px;
+  left: 28px;
+}
+
+#inventoryItems {
+  display: inline-block;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 80%;
+  margin: 15% 6% 15% 13%;
+  z-index: 4;
+  
+}
+
+#inventoryItems td, #inventoryItems th {
+  border: 1px solid #ddd;
+  height: 75px;
+  width: 100px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+}
+
+#inventoryItems tr:nth-child(even){background-color: #f2f2f260;}
+
+#inventoryItems i:hover {background-color: #ddd;}
+
+#inventoryItems th {
+  text-align: center;
+  background-color: rgb(116, 108, 73);
+  color: white;
+}
+
+#inventoryItems i {
+    height: 40px;
+    width: 40px;
+    padding: 3px;
+    font-size: 40px;
+    background: rgba(255, 255, 255, 0.185);
+    display: inline-block;
+    color: black;
+    border: 0px solid black;
+}
+
+/* Inventory Icons Inventory Icons Inventory Icons Inventory Icons Inventory Icons*/
+
+#doubleStrike {
+  position: absolute;
+  left: 70px;
+  top: 140px;
+}
+
+#doubleStrikeOffset {
+  display: inline;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.363) !important;
+  left: 80px;
+  top: 155px;
+  z-index: 1;
+}
+
+#heal {
+  display: none !important;
+}
+
+#meteor {
+  display: none ! important;
+}
+
+
+
+
+/* Inventory Icons END Inventory Icons END Inventory Icons END Inventory Icons END*/
+
+
 
 .topBox {
     display: block;
@@ -258,7 +371,7 @@ h1 {
   font-size: 70px;
   height: 70px;
   width: 70px;
-  padding: 10px;;
+  padding: 10px;
   margin-bottom: 15px;
   display: inline-block;
   color: black;
@@ -369,6 +482,7 @@ h1 {
     height: 117px;
     bottom: 0px;
     text-align: center;
+    z-index: 0;
 }
 
 .combatBox > i {
@@ -387,6 +501,72 @@ h1 {
 }
 
 
+
+
+
+
+.inventoryAnimation{
+  animation: inventoryAnimation linear 1s;
+  animation-iteration-count: 1;
+  transform-origin: 50% 50%;
+  -webkit-animation: inventoryAnimation linear 1s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-transform-origin: 50% 50%;
+  -moz-animation: inventoryAnimation linear 1s;
+  -moz-animation-iteration-count: 1;
+  -moz-transform-origin: 50% 50%;
+  -o-animation: inventoryAnimation linear 1s;
+  -o-animation-iteration-count: 1;
+  -o-transform-origin: 50% 50%;
+  -ms-animation: inventoryAnimation linear 1s;
+  -ms-animation-iteration-count: 1;
+  -ms-transform-origin: 50% 50%;
+}
+
+@keyframes inventoryAnimation{
+  0% {
+    transform:  translate(100px,0px)  ;
+  }
+  100% {
+    transform:  translate(0px,0px)  ;
+  }
+}
+
+@-moz-keyframes inventoryAnimation{
+  0% {
+    -moz-transform:  translate(100px,0px)  ;
+  }
+  100% {
+    -moz-transform:  translate(0px,0px)  ;
+  }
+}
+
+@-webkit-keyframes inventoryAnimation {
+  0% {
+    -webkit-transform:  translate(100px,0px)  ;
+  }
+  100% {
+    -webkit-transform:  translate(0px,0px)  ;
+  }
+}
+
+@-o-keyframes inventoryAnimation {
+  0% {
+    -o-transform:  translate(100px,0px)  ;
+  }
+  100% {
+    -o-transform:  translate(0px,0px)  ;
+  }
+}
+
+@-ms-keyframes inventoryAnimation {
+  0% {
+    -ms-transform:  translate(100px,0px)  ;
+  }
+  100% {
+    -ms-transform:  translate(0px,0px)  ;
+  }
+}
 
 
 

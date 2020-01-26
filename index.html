@@ -28,14 +28,46 @@
             <img id=spiderQueen class="elementAnimation" src="/img/spiderQueen.jpg" alt="" style="filter: grayscale(70%) blur(.7px);">
             <img id=wizard class="elementAnimation" src="/img/wizard.jpg" alt="" style="filter: grayscale(60%) blur(.7px);">
             <img id=forestPic src="/img/forest.jpg" alt="" style="filter: grayscale(50%) blur(.7px);">
+            
+            <div class="inventoryContainer" id="inventoryAnimateIn" id="inventoryAnimateOut">
+                <img id="inventoryBackground" src="/img/inventoryBackground.png" alt="">
+                <i onclick="inventoryToggleOut();" id="inventoryToggleButton" class="far fa-times-circle"></i>
+
+                <table id="inventoryItems">
+                    <tr>
+                      <th>Abilities</th>
+                      <th>Combat Items</th>
+                      <th>Support Items</th>
+                    </tr>
+                    <tr>
+                      <td><i id="doubleStrike" class="fas fa-hand-rock"></i><i id="doubleStrikeOffset" class="fas fa-hand-rock"></i></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                        <td><i id="heal" class="fas fa-heartbeat"></i></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><i id="meteor" class="fas fa-meteor"></i></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                  </table>
+
+
+            </div>
+
             <div class="topBox" id="player">
-            <i id="face" class="far fa-smile-beam"></i>
-            <h1 id="playerName"></h1>
-            <span id="playerSubmit">
+                <i id="face" class="far fa-smile-beam"></i>
+                <h1 id="playerName"></h1>
+
+                <span id="playerSubmit">
                 <input type="text" id="nameField" value="Who's Playing?" onclick="eraseText();"><button onclick="changeName()">Submit</button>
-            </span>
-            <br>
-            <span id="playerInfo">
+                </span>
+                <br>
+                <span id="playerInfo">
                 <h2>Level: </h2><h2 id="levelInfo">???</h2>
                 <h2 id="textSpace">HP: </h2><h2 id="healthInfo">???</h2>
                 <h2 id="textSpace">Str: </h2><h2 id="strengthInfo">???</h2>
@@ -43,19 +75,19 @@
                 <h2>Experience</h2>
                 <div id="playerProgressInfo"></div>
                     </div>
-            </span>
+                </span>
 
-            <div id="location">
+                <div id="location">
                 <h1 id="playerName"></h1>
                 <br>
                 <div id="settingInfo">
-                    <h2>Location: </h2><h2 id="locationInfo">???</h2>
-                    <div class="levelProgressContainer">
-                    <h2>Location Progress</h2>
-                    <div id="progressInfo"></div>
-                    </div>
+                <h2>Location: </h2><h2 id="locationInfo">???</h2>
+                <div class="levelProgressContainer">
+                <h2>Location Progress</h2>
+                <div id="progressInfo"></div>
                 </div>
-            </div>
+                </div>
+                </div>
         </div>
         
 
@@ -84,6 +116,7 @@
         </div>
 
         <div class="combatBox" id="combatIcons">
+            <i onclick="inventoryToggleIn();" id="inventory" class="fas fa-qrcode"></i>
             <i id="attack" class="fas fa-hand-rock"></i>
             <i id="runAway" class="fas fa-running"></i>
         </div>
