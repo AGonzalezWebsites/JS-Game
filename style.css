@@ -85,8 +85,7 @@ h1 {
 #placeHolder {
   display: inline;
   opacity: .9;
-  filter: blur(1px);
-  filter: grayscale(60%);
+  filter: blur(.7px) grayscale(80%);
 }
 
 .playArea > img {
@@ -184,16 +183,6 @@ h1 {
 
 /* Inventory Icons Inventory Icons Inventory Icons Inventory Icons Inventory Icons*/
 
-#heal {
-}
-
-#berzerk {
-  display: none !important;
-}
-
-#meteor {
-  display: none !important;
-}
 
 
 

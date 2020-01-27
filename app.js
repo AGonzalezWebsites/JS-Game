@@ -418,8 +418,6 @@ function combatSequence(param1) {
     };
     //after attack click function above. Has checks for spells.
     function attack() {
-        attackSound.play();
-        enemyRoar.play();
         document.getElementById("combatIcons").style.display = "none";
 
         //if abilityUsed is heal if abilityUsed is heal if abilityUsed is heal if abilityUsed is heal
@@ -432,13 +430,18 @@ function combatSequence(param1) {
                 document.getElementById("dialog").innerHTML = "You need " + player.abilities.heal.attackPoints + " attack points for this..."
                 setTimeout(function() {abilityUsed = "none"; combatSequence(); }, 5000)
             } else {
+                
+                if (player.abilities.heal.amount + player.health > player.baseHealth){
+                    player.health = player.baseHealth;
+                } else {
+                    player.health = player.health + player.abilities.heal.amount;
+                }
                 document.getElementById("dialog").innerHTML = "You healed " + player.abilities.heal.amount + " points!!";
                 console.log("heal used");
                 player.attackPoints = player.attackPoints - player.abilities.heal.attackPoints;
                 document.getElementById("attackPointsInfo").innerHTML = player.attackPoints;
                 inventoryToggleOut();
                 abilityUsed = "none"
-                player.health = player.health + player.abilities.heal.amount;
                 i = section1.enemies.tempEnemyHealth;
                 overallDamageGiven = 0;
                 overallDamageTaken = overallDamageTaken + selectedName.attack;   
@@ -454,7 +457,8 @@ function combatSequence(param1) {
             // END HEAL END HEAL END HEAL
 
         } else {    //if no abilities are used
-        console.log("heal used");
+        attackSound.play();
+        enemyRoar.play();
         section1.enemies.tempEnemyHealth = section1.enemies.tempEnemyHealth - player.strength;
         player.health = player.health - selectedName.attack;
         i = section1.enemies.tempEnemyHealth;
@@ -471,7 +475,7 @@ function combatSequence(param1) {
             if (section1.enemies.tempEnemyHealth >= 1 && player.health >= 1) {
                 document.getElementById("dialog").innerHTML = "You dealt " + tempDamage + " damage to " + selectedName.name; 
                 document.getElementById("healthInfo").innerHTML = player.health;
-                setTimeout(function() { document.getElementById("dialog").innerHTML = "You received " + selectedName.attack + " damage"; }, 3000)
+                setTimeout(function() {attackSound.play(); document.getElementById("dialog").innerHTML = "You received " + selectedName.attack + " damage"; }, 3000)
                 setTimeout(function() { combatSequence(); }, 6000)
                 return
 
