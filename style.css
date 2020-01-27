@@ -62,7 +62,7 @@ h1 {
 }
 
 #toggleBackground {
-  display: inline;
+  display: none;
   position: absolute;
   bottom: 130px;
   left: 181px;

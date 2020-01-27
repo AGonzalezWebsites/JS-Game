@@ -50,6 +50,7 @@ var forestFinalBattle = document.getElementById("audio7");
 var changeName = function() {
     var name = document.getElementById("nameField").value;
     document.getElementById("dialogBox").style.display = "flex";
+    document.getElementById("toggleBackground").style.display = "inline";
     document.getElementById("playerName").innerHTML = name;
     document.getElementById("face").style.display = "inline-block";
     document.getElementById("playerSubmit").remove();
