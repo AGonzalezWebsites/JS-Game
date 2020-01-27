@@ -41,6 +41,7 @@ i.far:hover {
     width: 30px;
     display: inline-block;
     color: black;
+    background: rgba(214, 207, 197, 0.658) !important;
 }
 
 h3 {
@@ -58,6 +59,21 @@ h2 {
 h1 {
     display: inline-block;
     font-size: 30px;
+}
+
+#toggleBackground {
+  display: inline;
+  position: absolute;
+  bottom: 130px;
+  left: 181px;
+}
+
+#toggleBackground > i {
+  width: 20px;
+  height: 15px;
+  text-align: center;
+  padding: 2px;
+  background: rgba(214, 207, 197, 0.658) !important;
 }
 
 .playArea {
@@ -309,15 +325,14 @@ h1 {
 
 .dialogBox {
     display: none;
-    position: relative;
+    position: absolute;
     background: rgba(245, 244, 243, 0.80);
     border: 1px solid black;
     border-radius: 5px;
-    margin-left: auto;
-    margin-right: auto;
+    left: 12px;
+    top: 230px;
     width: 375px;
     height: 100px;
-    top: 30px;
     overflow: hidden;
 }
 

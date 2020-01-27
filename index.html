@@ -16,6 +16,7 @@
         <audio id="audio5" src="sounds/fightWon.mp3"></audio>
         <audio loop id="audio6" src="sounds/forestFinalBattleIntro.mp3"></audio>
         <audio loop id="audio7" src="sounds/forestFinalBattle.mp3"></audio>
+
         <div id="playArea" class="playArea">    
             <img id="placeHolder" src="/img/cardPlaceholder.jpg" alt="">
             <img id=wolf class="elementAnimation" src="/img/wolf.jpg" alt="" style="filter: grayscale(60%) blur(.7px);">
@@ -29,6 +30,10 @@
             <img id=wizard class="elementAnimation" src="/img/wizard.jpg" alt="" style="filter: grayscale(60%) blur(.7px);">
             <img id=forestPic src="/img/forest.jpg" alt="" style="filter: grayscale(60%) blur(.7px);">
             
+            <div id="toggleBackground">
+                <i onclick="topBoxToggle();" class="far fa-eye"></i>
+            </div>
+
             <div class="inventoryContainer" id="inventoryAnimateIn" id="inventoryAnimateOut">
                 <img id="inventoryBackground" src="/img/inventoryBackground.png" alt="">
                 <i onclick="inventoryToggleOut();" id="inventoryToggleButton" class="far fa-times-circle"></i>
@@ -118,7 +123,7 @@
 
         <div class="combatBox" id="combatIcons">
             <i onclick="inventoryToggleIn();" id="inventory" class="fas fa-qrcode"></i>
-            <i onclick="attack();" id="attack" class="fas fa-hand-rock"></i>
+            <i onclick="combatSequence();" id="attack" class="fas fa-hand-rock"></i>
             <i id="runAway" class="fas fa-running"></i>
         </div>
 

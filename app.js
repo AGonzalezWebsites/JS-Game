@@ -68,10 +68,21 @@ var changeName = function() {
 
 function inventoryToggleIn() {
     document.getElementById("inventoryAnimateIn").style.display = "inline-block";
+    document.getElementById("dialogBox").style.display = "none";
 }
 
 function inventoryToggleOut() {
     document.getElementById("inventoryAnimateIn").style.display = "none";
+    document.getElementById("dialogBox").style.display = "flex";
+}
+
+function topBoxToggle () {
+     var x = document.getElementById("player");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
 }
 
 //world 1, which contains enemies and challenge properties as well as challenge and chack answer methods
@@ -128,7 +139,7 @@ var section1 = {
                             selectChallenge = 4;
                             this.selectedChallengeName = section1.enemies.enemy13;
                             document.getElementById("commandIcons").style.display = "none";
-                            document.getElementById("dialog").innerHTML = "You hear a loud hiss as fangs the size of ice picks speed towards you!!"
+                            document.getElementById("dialog").innerHTML = "You barely free yourself as a creature shoots a string of web towards you!!"
                             setTimeout(function(){playerAttacked()}, 5000);
                             },
                     },
@@ -280,6 +291,7 @@ var section1 = {
 function checkLevelProgress (){ // checks player Level - invoked by "nextIcons" onclick
     if (player.progress >= player.progressNeeded) {
         player.attackPoints = 50; //temporary to reset AP
+        fightWon.play();
         document.getElementById("attackPointsInfo").innerHTML = player.attackPoints; //temporary to reset AP
         document.getElementById("commandIcons").style.display = "none";
         document.getElementById("nextIcons").style.display = "none";
@@ -403,29 +415,29 @@ var attack;
 //combat sequence - also checks for abilities called and adjusts values
 function combatSequence(param1) {
     param1;
+    document.getElementById("combatIcons").style.display = "block";
     document.getElementById("dialog").innerHTML = "<b>Fighting</b>: " + selectedName.name
         + "<br><b>Lvl</b>: " + selectedName.level + " <b>Atk</b>: " + selectedName.attack + " <b>HP</b>: " + section1.enemies.tempEnemyHealth;
     if (param1 === player.abilities.heal.name) {
         abilityUsed = player.abilities.heal.name;
+        document.getElementById("combatIcons").style.display = "none";
         attack();
     }
     
-    document.getElementById("combatIcons").style.display = "block";
-    
     //invoked when attack is clicked, damage date applied
     document.getElementById("attack").onclick = function(param1) {
+    document.getElementById("combatIcons").style.display = "none";
     attack();
     };
     //after attack click function above. Has checks for spells.
     function attack() {
-        document.getElementById("combatIcons").style.display = "none";
+        
 
         //if abilityUsed is heal if abilityUsed is heal if abilityUsed is heal if abilityUsed is heal
         if (abilityUsed === "heal") {
-
             if (player.attackPoints < player.abilities.heal.attackPoints) {
                 inventoryToggleOut();
-                document.getElementById("combatIcons").style.display = "none";
+                
                 console.log("tested ability points")
                 document.getElementById("dialog").innerHTML = "You need " + player.abilities.heal.attackPoints + " attack points for this..."
                 setTimeout(function() {abilityUsed = "none"; combatSequence(); }, 5000)
