@@ -40,7 +40,7 @@
                       <th>Support Items</th>
                     </tr>
                     <tr>
-                      <td><i id="heal" class="fas fa-heartbeat"></i></td>
+                      <td><i onclick="combatSequence(player.abilities.heal.name);" id="heal" class="fas fa-heartbeat"></i></td>
                       <td></td>
                       <td></td>
                     </tr>
@@ -71,6 +71,7 @@
                 <h2>Level: </h2><h2 id="levelInfo">???</h2>
                 <h2 id="textSpace">HP: </h2><h2 id="healthInfo">???</h2>
                 <h2 id="textSpace">Str: </h2><h2 id="strengthInfo">???</h2>
+                <h2 id="textSpace">AP: </h2><h2 id="attackPointsInfo">???</h2>
                 <div class="playerLevelProgressContainer">
                 <h2>Experience</h2>
                 <div id="playerProgressInfo"></div>
@@ -117,7 +118,7 @@
 
         <div class="combatBox" id="combatIcons">
             <i onclick="inventoryToggleIn();" id="inventory" class="fas fa-qrcode"></i>
-            <i id="attack" class="fas fa-hand-rock"></i>
+            <i onclick="attack();" id="attack" class="fas fa-hand-rock"></i>
             <i id="runAway" class="fas fa-running"></i>
         </div>
 

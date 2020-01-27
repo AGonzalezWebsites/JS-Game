@@ -1,10 +1,7 @@
 /*
 Things to Add/Do:
-1) Add unique and maybe more complex challenges
-2) When a challenge is completed (not when avoided), delete that specific challenge property
-2) Additional Moves after leveling up
-3) Some kind of visual/animation for progression other than just the bar
-4) Final boss when progress is 100& (if you back out, progress reduced to 70%)
+1) player level progress needed does not increase per level
+3) Additional Moves after leveling up
 
 BUGS: When you opt out of fighting the final boss, he begins showing up in the forest instead of other enemies
 
@@ -21,7 +18,7 @@ BUGS: When you opt out of fighting the final boss, he begins showing up in the f
     document.getElementById("audio7").preload;
 }());
 
-
+var abilityUsed;
 function Person(firstname, lastname, health, strength) {
     console.log(this)
     this.firstname = firstname;
@@ -31,11 +28,12 @@ function Person(firstname, lastname, health, strength) {
     this.baseHealth = health;
     this.strength = strength;
     this.progress = 0;
-    this.attackPoints = 0;
+    this.progressNeeded = 100;
+    this.attackPoints = 50;
     this.abilities = {
-        Heal: { name: "Heal", amount: 30, attackPoints: 18}, 
-        berzerk: { name: "Berzerk", strength: 9, attackPoints: 15}, 
-        meteor: { name: "meteor", strength: 31, attackPoints: 31}, 
+        heal: { name: "heal", amount: 30, attackPoints: 18, learned: "no"},
+        berzerk: { name: "Berzerk", strength: 9, attackPoints: 21, learned: "no"}, 
+        meteor: { name: "meteor", strength: 31, attackPoints: 35, learned: "no"}, 
     }
 }
 
@@ -62,6 +60,7 @@ var changeName = function() {
     document.getElementById("locationInfo").innerHTML = section1.location;
     document.getElementById("levelInfo").innerHTML = player.level;
     document.getElementById("healthInfo").innerHTML = player.health;
+    document.getElementById("attackPointsInfo").innerHTML = player.attackPoints;
     document.getElementById("strengthInfo").innerHTML = player.strength;
     document.getElementById("dialog").innerHTML = "Welcome," + ' ' + name + 
     "! Progress through the " + section1.location + " and overcome challenges to escape..";
@@ -84,14 +83,14 @@ var section1 = {
     location: "Enchanted Forest",
     progress: 0,
     enemies: {
-        enemy1: {name: 'Vengeful Wolf', level: 1, attack: 3, health: 5, expGiven: 13, picID: "wolf"},
-        enemy2: {name: "Webbie", level: 1, attack: 1, health: 3, expGiven: 6, picID: "spiderSmall"},
-        enemy3: {name: "Beetler", level: 1, attack: 3, health: 7, expGiven: 15, picID: "beetle"},
-        enemy4: {name: 'Knight Beaver', level: 1, attack: 2, health: 4, expGiven: 8, picID: "beaver"},
-        enemy10: {name: 'Hotmush', level: 1, attack: 9, health: 3, expGiven: 22, picID: "mushroom"},
-        enemy11: {name: 'King Serpentor', level: 2, attack: 11, health: 6, expGiven: 36, picID: "snake"},
-        enemy12: {name: "Colossal Rootra", level: 2, attack: 4, health: 10, expGiven: 24, picID: "plant"},
-        enemy13: {name: "Queen Webra", level: 2, attack: 9, health: 8, expGiven: 39, picID: "spiderQueen"},
+        enemy1: {name: 'Vengeful Wolf', level: 1, attack: 3, health: 5, expGiven: 16, picID: "wolf"},
+        enemy2: {name: "Webbie", level: 1, attack: 1, health: 3, expGiven: 8, picID: "spiderSmall"},
+        enemy3: {name: "Beetler", level: 1, attack: 3, health: 7, expGiven: 18, picID: "beetle"},
+        enemy4: {name: 'Knight Beaver', level: 1, attack: 2, health: 4, expGiven: 11, picID: "beaver"},
+        enemy10: {name: 'Hotmush', level: 1, attack: 9, health: 3, expGiven: 29, picID: "mushroom"},
+        enemy11: {name: 'King Serpentor', level: 2, attack: 11, health: 6, expGiven: 44, picID: "snake"},
+        enemy12: {name: "Colossal Rootra", level: 2, attack: 4, health: 10, expGiven: 28, picID: "plant"},
+        enemy13: {name: "Queen Webra", level: 2, attack: 9, health: 8, expGiven: 51, picID: "spiderQueen"},
         enemy14: {name: "Gate Keeper", level: "???", attack: 31, health: 54, expGiven: 212, picID: "wizard"},
     },
     firstChallenge: function() {forestChallengeMusic.play(); selectedChallenge = section1.challenges.challenge1; document.getElementById("initialNextIcons").style.display = "none"; section1.progressionCheck(); },
@@ -279,7 +278,9 @@ var section1 = {
 //Beginning of checks before starting sequence
 
 function checkLevelProgress (){ // checks player Level - invoked by "nextIcons" onclick
-    if (player.progress >= 100) {
+    if (player.progress >= player.progressNeeded) {
+        player.attackPoints = 50; //temporary to reset AP
+        document.getElementById("attackPointsInfo").innerHTML = player.attackPoints; //temporary to reset AP
         document.getElementById("commandIcons").style.display = "none";
         document.getElementById("nextIcons").style.display = "none";
         player.progress = 0;
@@ -299,9 +300,19 @@ function checkLevelProgress (){ // checks player Level - invoked by "nextIcons" 
             document.getElementById("dialog").innerHTML = "Your Strength has increased to " + player.strength + "!!"
         }, 7000);
         setTimeout(function() {
+
+            if (player.level === 2 && player.abilities.heal.learned == "no") {
+                document.getElementById("dialog").innerHTML ="You've learned Heal!!!";
+                document.getElementById("heal").style.display = "inline-block";
+                player.abilities.heal.learned = "yes";
+                setTimeout(function() {checkfinalBoss();}, 4000);
+            } else {
             checkfinalBoss();
+            }
         }, 10000);
     } else {
+        player.attackPoints = 50; //temporary to reset AP
+        document.getElementById("attackPointsInfo").innerHTML = player.attackPoints; //temporary to reset AP
         checkfinalBoss();
     }
 }
@@ -384,71 +395,126 @@ function playerAttacked() {
 }
   
 //fight sequence 
-
+var abilityUsed
 var overallDamageGiven = 0;
 var overallDamageTaken = 0;
 var sequences = 0;
-function combatSequence() {
+var attack;
+//combat sequence - also checks for abilities called and adjusts values
+function combatSequence(param1) {
+    param1;
     document.getElementById("dialog").innerHTML = "<b>Fighting</b>: " + selectedName.name
         + "<br><b>Lvl</b>: " + selectedName.level + " <b>Atk</b>: " + selectedName.attack + " <b>HP</b>: " + section1.enemies.tempEnemyHealth;
+    if (param1 === player.abilities.heal.name) {
+        abilityUsed = player.abilities.heal.name;
+        attack();
+    }
+    
     document.getElementById("combatIcons").style.display = "block";
-    //sdfvkasbeldjkblvnesdlgvkbsendlfgvjnsedfl3vbjngsdlfkjvbnsldfg
-
-    document.getElementById("attack").onclick = function () {
-    attackSound.play();
-    enemyRoar.play();
-    document.getElementById("combatIcons").style.display = "none";
-    section1.enemies.tempEnemyHealth = section1.enemies.tempEnemyHealth - player.strength;
-    i = section1.enemies.tempEnemyHealth;
-    player.health = player.health - selectedName.attack;
-    overallDamageGiven = overallDamageGiven + player.strength;
-    overallDamageTaken = overallDamageTaken + selectedName.attack;              
-    sequences = sequences + 1;
-            
-        //Determines if player is still alive. Game ends if not.
-        if (section1.enemies.tempEnemyHealth >= 1 && player.health >= 1) {
-            document.getElementById("dialog").innerHTML = "You dealt " + player.strength + " damage to " + selectedName.name; 
-            document.getElementById("healthInfo").innerHTML = player.health;
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You received " + selectedName.attack + " damage"; }, 3000)
-            setTimeout(function() { combatSequence(); }, 6000)
-            return
-
-        } else if (player.health <= 0) {
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "You Died..."; }, 1)
-            setTimeout(function() { document.location.reload(true); }, 5000)
-            return
-        } else if  (section1.enemies.tempEnemyHealth <= 1) {
-            document.getElementById(selectedName.picID).style.animation = "attacked linear 1s";
-            document.getElementById("commandIcons").style.display = "none";
-            document.getElementById("dialog").innerHTML = "Congratulations, you've won the fight!!"; 
-            document.getElementById("healthInfo").innerHTML = player.health;
-            fightWon.play();
-            forestCombatMusic.pause();
-            forestFinalBattleIntro.pause();
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Dealt: " + overallDamageGiven; }, 3000)
-            setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Received: " + overallDamageTaken; }, 6000)
-            setTimeout(function() {
-                document.getElementById("dialog").innerHTML = "You gained " + selectedName.expGiven + " XP!!!"
-                for (i = 0; i < selectedName.expGiven; i++) {
-                    (function(i) {
-                        setTimeout(function() {
-                            let atPercentage = player.progress + 1;
-                            player.progress = atPercentage
-                            document.getElementById("playerProgressInfo").style.width = atPercentage + '%'; 
-                        }, 100 * i);
-                    }(i));
-                }
-            }, 9000)
-            setTimeout(function() {
-                sequences = 0;
-                overallDamageGiven = 0;
-                overallDamageTaken = 0;
-                document.getElementById("commandIcons").style.display = "none";
-                document.getElementById(selectedName.picID).style.display = "none";
-                document.getElementById("nextIcons").style.display = "inline-block";
-                }, 12000)
-        }
+    
+    //invoked when attack is clicked, damage date applied
+    document.getElementById("attack").onclick = function(param1) {
+    attack();
     };
+    //after attack click function above. Has checks for spells.
+    function attack() {
+        attackSound.play();
+        enemyRoar.play();
+        document.getElementById("combatIcons").style.display = "none";
+
+        //if abilityUsed is heal if abilityUsed is heal if abilityUsed is heal if abilityUsed is heal
+        if (abilityUsed === "heal") {
+
+            if (player.attackPoints < player.abilities.heal.attackPoints) {
+                inventoryToggleOut();
+                document.getElementById("combatIcons").style.display = "none";
+                console.log("tested ability points")
+                document.getElementById("dialog").innerHTML = "You need " + player.abilities.heal.attackPoints + " attack points for this..."
+                setTimeout(function() {abilityUsed = "none"; combatSequence(); }, 5000)
+            } else {
+                document.getElementById("dialog").innerHTML = "You healed " + player.abilities.heal.amount + " points!!";
+                console.log("heal used");
+                player.attackPoints = player.attackPoints - player.abilities.heal.attackPoints;
+                document.getElementById("attackPointsInfo").innerHTML = player.attackPoints;
+                inventoryToggleOut();
+                abilityUsed = "none"
+                player.health = player.health + player.abilities.heal.amount;
+                i = section1.enemies.tempEnemyHealth;
+                overallDamageGiven = 0;
+                overallDamageTaken = overallDamageTaken + selectedName.attack;   
+                tempDamage = 0;           
+                sequences = sequences + 1;
+                setTimeout(function() {  
+                    document.getElementById("dialog").innerHTML = "You used " + player.abilities.heal.attackPoints + " attack points..";
+                }, 3000)
+                setTimeout(function() {  
+                    finishAttack();
+                }, 6000)
+            }
+            // END HEAL END HEAL END HEAL
+
+        } else {    //if no abilities are used
+        console.log("heal used");
+        section1.enemies.tempEnemyHealth = section1.enemies.tempEnemyHealth - player.strength;
+        player.health = player.health - selectedName.attack;
+        i = section1.enemies.tempEnemyHealth;
+        overallDamageGiven = overallDamageGiven + player.strength;
+        overallDamageTaken = overallDamageTaken + selectedName.attack;     
+        tempDamage = player.strength;         
+        sequences = sequences + 1;
+        finishAttack();
+        } 
+
+        //Determines if player is still alive, then executes damage to both enemies before returning to start of combat
+        function finishAttack(){
+            document.getElementById("combatIcons").style.display = "none";
+            if (section1.enemies.tempEnemyHealth >= 1 && player.health >= 1) {
+                document.getElementById("dialog").innerHTML = "You dealt " + tempDamage + " damage to " + selectedName.name; 
+                document.getElementById("healthInfo").innerHTML = player.health;
+                setTimeout(function() { document.getElementById("dialog").innerHTML = "You received " + selectedName.attack + " damage"; }, 3000)
+                setTimeout(function() { combatSequence(); }, 6000)
+                return
+
+            //if player health is below 1, you died (reloads webpage)
+            } else if (player.health <= 0) {
+                setTimeout(function() { document.getElementById("dialog").innerHTML = "You Died..."; }, 1)
+                setTimeout(function() { document.location.reload(true); }, 5000)
+                return
+
+            //if player enemy's health is below 1, you win fight and damage stats are shown
+            } else if  (section1.enemies.tempEnemyHealth <= 1) {
+                document.getElementById(selectedName.picID).style.animation = "attacked linear 1s";
+                document.getElementById("commandIcons").style.display = "none";
+                document.getElementById("dialog").innerHTML = "Congratulations, you've won the fight!!"; 
+                document.getElementById("healthInfo").innerHTML = player.health;
+                fightWon.play();
+                forestCombatMusic.pause();
+                forestFinalBattleIntro.pause();
+                setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Dealt: " + overallDamageGiven; }, 3000)
+                setTimeout(function() { document.getElementById("dialog").innerHTML = "Total Damage Received: " + overallDamageTaken; }, 6000)
+                setTimeout(function() {
+                    document.getElementById("dialog").innerHTML = "You gained " + selectedName.expGiven + " XP!!!"
+                    for (i = 0; i < selectedName.expGiven; i++) {
+                        (function(i) {
+                            setTimeout(function() {
+                                let atPercentage = player.progress + 1;
+                                player.progress = atPercentage
+                                document.getElementById("playerProgressInfo").style.width = atPercentage + '%'; 
+                            }, 100 * i);
+                        }(i));
+                    }
+                }, 9000)
+                setTimeout(function() {
+                    sequences = 0;
+                    overallDamageGiven = 0;
+                    overallDamageTaken = 0;
+                    document.getElementById("commandIcons").style.display = "none";
+                    document.getElementById(selectedName.picID).style.display = "none";
+                    document.getElementById("nextIcons").style.display = "inline-block";
+                    }, 12000)
+            }
+        };
+    }
 
     //Attempts to run away. 50/50 chance.
     document.getElementById("runAway").onclick = function () {
