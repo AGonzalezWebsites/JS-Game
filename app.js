@@ -69,12 +69,10 @@ var changeName = function() {
 
 function inventoryToggleIn() {
     document.getElementById("inventoryAnimateIn").style.display = "inline-block";
-    document.getElementById("dialogBox").style.display = "none";
 }
 
 function inventoryToggleOut() {
     document.getElementById("inventoryAnimateIn").style.display = "none";
-    document.getElementById("dialogBox").style.display = "flex";
 }
 
 function topBoxToggle () {
