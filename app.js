@@ -70,7 +70,7 @@ var changeName = function() {
 function inventoryToggleIn() {
     document.getElementById("inventoryAnimateIn").style.display = "inline-block";
     document.getElementById("dialogBox").style.display = "none";
-    document.getElementById("playArea").style.display = "block"; // to correct play area dissapearing during toggle
+    document.getElementById("playArea").style.display = "none"; // to correct play area dissapearing during toggle
 }
 
 function inventoryToggleOut() {
