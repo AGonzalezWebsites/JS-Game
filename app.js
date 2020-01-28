@@ -418,7 +418,6 @@ var sequences = 0;
 var attack;
 //combat sequence - also checks for abilities called and adjusts values
 function combatSequence(param1) {
-    forestCombatMusic.play();
     param1;
     document.getElementById("combatIcons").style.display = "block";
     document.getElementById("dialog").innerHTML = "<b>Fighting</b>: " + selectedName.name
