@@ -50,7 +50,7 @@ var forestFinalBattle = document.getElementById("audio7");
 var changeName = function() {
     var name = document.getElementById("nameField").value;
     document.getElementById("dialogBox").style.display = "flex";
-    document.getElementById("toggleBackground").style.display = "inline";
+    document.getElementById("toggleBackground").style.display = "flex";
     document.getElementById("playerName").innerHTML = name;
     document.getElementById("face").style.display = "inline-block";
     document.getElementById("playerSubmit").remove();
@@ -69,10 +69,15 @@ var changeName = function() {
 
 function inventoryToggleIn() {
     document.getElementById("inventoryAnimateIn").style.display = "inline-block";
+    document.getElementById("dialogBox").style.display = "none";
+    document.getElementById("playArea").style.display = "block"; // to correct play area dissapearing during toggle
 }
 
 function inventoryToggleOut() {
     document.getElementById("inventoryAnimateIn").style.display = "none";
+    document.getElementById("dialogBox").style.display = "flex";
+    document.getElementById("playArea").style.display = "block"; // to correct play area dissapearing during toggle
+    
 }
 
 function topBoxToggle () {
