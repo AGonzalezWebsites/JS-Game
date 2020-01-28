@@ -67,11 +67,7 @@ var changeName = function() {
     "! Progress through the " + section1.location + " and overcome challenges to escape..";
 };
 
-function SelectAll(id)
-{
-    document.getElementById(id).focus();
-    document.getElementById(id).select();
-}
+
 
 function inventoryToggleIn() {
     document.getElementById("inventoryAnimateIn").style.display = "inline-block";
