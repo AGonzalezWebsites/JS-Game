@@ -173,9 +173,7 @@ h1 {
 #inventoryItems td, #inventoryItems th {
   border: 1px solid black;
   height: 75px;
-  width: 100px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding: 5px;
   text-align: center;
 }
 
@@ -184,6 +182,14 @@ h1 {
 #inventoryItems th {
   text-align: center;
   background-color: rgb(116, 108, 73);
+}
+
+#smallerColumn {
+  width: 50px !important;
+}
+
+#smallerColumn {
+  width: 100px !important;
 }
 
 #inventoryItems i {

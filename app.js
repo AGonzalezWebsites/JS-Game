@@ -3,8 +3,6 @@ Things to Add/Do:
 1) player level progress needed does not increase per level
 3) Additional Moves after leveling up
 
-BUGS: When you opt out of fighting the final boss, he begins showing up in the forest instead of other enemies
-
 */
 
 
@@ -48,6 +46,15 @@ var forestFinalBattle = document.getElementById("audio7");
 
 //initializing game
 var changeName = function() {
+
+    document.getElementById("audio1").play;
+    document.getElementById("audio2").play;
+    document.getElementById("audio3").play;
+    document.getElementById("audio4").play;
+    document.getElementById("audio5").play;
+    document.getElementById("audio6").play;
+    document.getElementById("audio7").play;
+
     var name = document.getElementById("nameField").value;
     document.getElementById("dialogBox").style.display = "flex";
     document.getElementById("toggleBackground").style.display = "flex";
@@ -318,6 +325,7 @@ function checkLevelProgress (){ // checks player Level - invoked by "nextIcons" 
             if (player.level === 2 && player.abilities.heal.learned == "no") {
                 document.getElementById("dialog").innerHTML ="You've learned Heal!!!";
                 document.getElementById("heal").style.display = "inline-block";
+                document.getElementById("healDescription").innerHTML = "Heal yourself " + player.abilities.heal.amount + " points at the cost of " + player.abilities.heal.attackPoints + " AP"; //temporary to reset AP
                 player.abilities.heal.learned = "yes";
                 setTimeout(function() {checkfinalBoss();}, 4000);
             } else {
