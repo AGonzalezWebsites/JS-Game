@@ -54,6 +54,13 @@ var changeName = function() {
     document.getElementById("audio5").play;
     document.getElementById("audio6").play;
     document.getElementById("audio7").play;
+    document.getElementById("audio1").pause;
+    document.getElementById("audio2").pause;
+    document.getElementById("audio3").pause;
+    document.getElementById("audio4").pause;
+    document.getElementById("audio5").pause;
+    document.getElementById("audio6").pause;
+    document.getElementById("audio7").pause;
 
     var name = document.getElementById("nameField").value;
     document.getElementById("dialogBox").style.display = "flex";
@@ -103,10 +110,10 @@ var section1 = {
     location: "Enchanted Forest",
     progress: 0,
     enemies: {
-        enemy1: {name: 'Vengeful Wolf', level: 1, attack: 3, health: 5, expGiven: 18, picID: "wolf"},
-        enemy2: {name: "Webbie", level: 1, attack: 1, health: 3, expGiven: 11, picID: "spiderSmall"},
-        enemy3: {name: "Beetler", level: 1, attack: 3, health: 7, expGiven: 21, picID: "beetle"},
-        enemy4: {name: 'Knight Beaver', level: 1, attack: 2, health: 4, expGiven: 13, picID: "beaver"},
+        enemy1: {name: 'Vengeful Wolf', level: 1, attack: 3, health: 5, expGiven: 21, picID: "wolf"},
+        enemy2: {name: "Webbie", level: 1, attack: 1, health: 3, expGiven: 14, picID: "spiderSmall"},
+        enemy3: {name: "Beetler", level: 1, attack: 3, health: 7, expGiven: 23, picID: "beetle"},
+        enemy4: {name: 'Knight Beaver', level: 1, attack: 2, health: 4, expGiven: 15, picID: "beaver"},
         enemy10: {name: 'Hotmush', level: 1, attack: 9, health: 3, expGiven: 34, picID: "mushroom"},
         enemy11: {name: 'King Serpentor', level: 2, attack: 11, health: 6, expGiven: 44, picID: "snake"},
         enemy12: {name: "Colossal Rootra", level: 2, attack: 4, health: 10, expGiven: 28, picID: "plant"},
@@ -247,7 +254,7 @@ var section1 = {
                 section1.progress = 80; 
                 section1.challenges.challenge5.forward();              
                 return    
-            } else if (8 <= Math.floor((Math.random() * 10) + 1)) {
+            } else if (6 <= Math.floor((Math.random() * 10) + 1)) {
                 for (i = 0; i < tempProgress; i++) {
                     (function(i) {
                         setTimeout(function() {
@@ -261,7 +268,7 @@ var section1 = {
                 setTimeout(function() {document.getElementById("commandIcons").style.display = "none"; document.getElementById("dialog").innerHTML = "Watch out!"}, 3000)
                 setTimeout(function() {playerAttacked(); }, 5000)
                 return
-            } else if (6 <= Math.floor((Math.random() * 10) + 1)) {
+            } else if (8 <= Math.floor((Math.random() * 10) + 1)) {
                     for (i = 0; i < tempProgress; i++) {
                         (function(i) {
                             setTimeout(function() {
@@ -325,9 +332,9 @@ function checkLevelProgress (){ // checks player Level - invoked by "nextIcons" 
             if (player.level === 2 && player.abilities.heal.learned == "no") {
                 document.getElementById("dialog").innerHTML ="You've learned Heal!!!";
                 document.getElementById("heal").style.display = "inline-block";
-                document.getElementById("healDescription").innerHTML = "Heal yourself " + player.abilities.heal.amount + " points at the cost of " + player.abilities.heal.attackPoints + " AP"; //temporary to reset AP
+                document.getElementById("healDescription").innerHTML = "Heal yourself " + player.abilities.heal.amount + " points at the cost of " + player.abilities.heal.attackPoints + " AP."; //temporary to reset AP
                 player.abilities.heal.learned = "yes";
-                setTimeout(function() {checkfinalBoss();}, 4000);
+                setTimeout(function() {document.getElementById("nextIcons").style.display = "inline-block";}, 4000);
             } else {
             checkfinalBoss();
             }
