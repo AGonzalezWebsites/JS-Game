@@ -389,7 +389,6 @@ function playerAttacked() {
     document.getElementById(selectedName.picID).style.display = "inline";
     document.getElementById(selectedName.picID).style.animation = "attacked linear 1s";
     document.getElementById(selectedName.picID).style.animation = "enemyAttack linear 1s";
-    forestCombatMusic.play();
     enemyRoar.play();
     attackSound.play();
     document.getElementById("dialog").innerHTML ="You were ambushed by " + selectedName.name + " and took " + selectedName.attack + " damage";
