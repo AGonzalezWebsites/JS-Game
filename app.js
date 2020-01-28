@@ -391,6 +391,7 @@ function playerAttacked() {
     document.getElementById(selectedName.picID).style.animation = "enemyAttack linear 1s";
     enemyRoar.play();
     attackSound.play();
+    forestCombatMusic.play();
     document.getElementById("dialog").innerHTML ="You were ambushed by " + selectedName.name + " and took " + selectedName.attack + " damage";
     player.health = player.health - selectedName.attack;
     document.getElementById("healthInfo").innerHTML = player.health;
