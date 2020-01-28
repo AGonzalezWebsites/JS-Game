@@ -224,7 +224,6 @@ h1 {
     margin: auto;
     justify-content: center;
     overflow: hidden;
-    
   }
 
 #playerSubmit > input {
@@ -474,6 +473,10 @@ h1 {
     bottom: 0px;
     text-align: center;
     z-index: 0;
+    border: 3px dotted black;
+    background: rgb(77,75,110);
+    background: linear-gradient(90deg, rgba(77,75,110,1) 0%, rgba(62,62,62,1) 35%, rgba(58,82,87,1) 100%);
+    filter: grayscale(70%);
 }
 
 .combatBox > i {
