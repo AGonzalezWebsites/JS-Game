@@ -67,10 +67,15 @@ var changeName = function() {
     "! Progress through the " + section1.location + " and overcome challenges to escape..";
 };
 
+function SelectAll(id)
+{
+    document.getElementById(id).focus();
+    document.getElementById(id).select();
+}
+
 function inventoryToggleIn() {
     document.getElementById("inventoryAnimateIn").style.display = "inline-block";
     document.getElementById("dialogBox").style.display = "none";
-    document.getElementById("playArea").style.display = "none"; // to correct play area dissapearing during toggle
 }
 
 function inventoryToggleOut() {
@@ -391,6 +396,7 @@ function playerAttacked() {
     document.getElementById(selectedName.picID).style.display = "inline";
     document.getElementById(selectedName.picID).style.animation = "attacked linear 1s";
     document.getElementById(selectedName.picID).style.animation = "enemyAttack linear 1s";
+    forestCombatMusic.play();
     enemyRoar.play();
     attackSound.play();
     document.getElementById("dialog").innerHTML ="You were ambushed by " + selectedName.name + " and took " + selectedName.attack + " damage";
