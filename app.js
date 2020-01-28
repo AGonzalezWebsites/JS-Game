@@ -544,7 +544,6 @@ function combatSequence(param1) {
             document.getElementById("dialog").innerHTML = "You escaped!!";
             lastChallengeInitiated = false;
             forestCombatMusic.pause();
-            forestCombatMusic.pause();
             document.getElementById(selectedName.picID).style.display = "none";
             document.getElementById("nextIcons").style.display = "inline-block";
         }  else { 
