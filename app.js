@@ -248,8 +248,8 @@ var section1 = {
             document.getElementById("forestPic").style.display = "inline";
             tempProgress = Math.floor((Math.random() * 9) + 1);
             document.getElementById("commandIcons").style.display = "none";
-            document.getElementById("dialog").innerHTML = tempProgress + " progress made!" 
-            
+            document.getElementById("dialog").innerHTML = '<img src=\"img/walkingGit.gif\">' + '<span style=\"position:absolute; top: 20px; left: 80px; z-index=2; text-align: center;\">' + tempProgress + ' Progress Made!!</span>';
+
             if (section1.progress > 99) {
                 section1.progress = 80; 
                 section1.challenges.challenge5.forward();              

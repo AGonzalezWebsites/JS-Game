@@ -331,7 +331,7 @@ h1 {
 .dialogBox {
     display: none;
     position: absolute;
-    background: rgba(245, 244, 243, 0.80);
+    background: rgba(255, 255, 255, 0.8);
     border: 1px solid black;
     border-radius: 5px;
     left: 12px;
@@ -349,8 +349,17 @@ h1 {
   transform: translate(-50%, -50%);
     font-size: 20px;
     text-align: center;
-    padding: 5px;
-    z-index: 0;
+}
+
+#dialog > img {
+  position: relative;
+  width: 300px;
+  height: 70px;
+  border: 1px outset black;
+  border-radius: 5px;
+  z-index: -1;
+  margin: 0;
+  opacity: .8;
 }
 
 .initialNextBox {
