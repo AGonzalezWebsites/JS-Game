@@ -1,7 +1,7 @@
 /*
 Things to Add/Do:
 1) player level progress needed does not increase per level
-3) Additional Moves after leveling up
+3) Heal Added - additional skills needed
 
 */
 
