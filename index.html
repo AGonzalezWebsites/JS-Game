@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link href="https://fonts.googleapis.com/css?family=Lacquer|Trade+Winds&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
@@ -16,6 +17,12 @@
         <audio id="audio5" src="sounds/fightWon.mp3"></audio>
         <audio loop id="audio6" src="sounds/forestFinalBattleIntro.mp3"></audio>
         <audio loop id="audio7" src="sounds/forestFinalBattle.mp3"></audio>
+        
+        <div class="instructions">
+            <i class="fas fa-times" onclick="closeInstructions()"></i>
+            <h1>A Javascript RPG Project</h1>
+            <p>Welcome! After submitting your name, simply progress through the forest and combat enemies with the large icons on the bottom of the game screen. As of now there is only one area to escape, but there will be many challenges along the way.<br><br><b>TIP:</b> your health is fully restored after leveling up. So don't fear a good fight!</p>
+        </div>
 
         <div id="playArea" class="playArea">    
             <img id="placeHolder" src="/img/cardPlaceholder.jpg" alt="">
@@ -68,7 +75,7 @@
                 </span>
                 <br>
                 <span id="playerInfo">
-                <h2>Level: </h2><h2 id="levelInfo">???</h2>
+                <h2>Lvl: </h2><h2 id="levelInfo">???</h2>
                 <h2 id="textSpace">HP: </h2><h2 id="healthInfo">???</h2>
                 <h2 id="textSpace">Str: </h2><h2 id="strengthInfo">???</h2>
                 <h2 id="textSpace">AP: </h2><h2 id="attackPointsInfo">???</h2>
