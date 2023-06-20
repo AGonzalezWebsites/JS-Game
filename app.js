@@ -114,10 +114,10 @@ var section1 = {
     progress: 0,
     enemies: {
         enemy1: {name: 'Vengeful Wolf', level: 1, attack: 3, health: 5, expGiven: 21, picID: "wolf"},
-        enemy2: {name: "Webbie", level: 1, attack: 1, health: 3, expGiven: 14, picID: "spiderSmall"},
+        enemy2: {name: "Caterous", level: 1, attack: 1, health: 3, expGiven: 14, picID: "caterous"},
         enemy3: {name: "Beetler", level: 1, attack: 3, health: 7, expGiven: 23, picID: "beetle"},
         enemy4: {name: 'Knight Beaver', level: 1, attack: 2, health: 4, expGiven: 15, picID: "beaver"},
-        enemy10: {name: 'Hotmush', level: 1, attack: 9, health: 3, expGiven: 34, picID: "mushroom"},
+        enemy10: {name: 'hawkslash', level: 1, attack: 9, health: 3, expGiven: 34, picID: "hawkslash"},
         enemy11: {name: 'King Serpentor', level: 2, attack: 11, health: 6, expGiven: 44, picID: "snake"},
         enemy12: {name: "Colossal Rootra", level: 2, attack: 4, health: 10, expGiven: 28, picID: "plant"},
         enemy13: {name: "Queen Webra", level: 2, attack: 9, health: 8, expGiven: 51, picID: "spiderQueen"},
